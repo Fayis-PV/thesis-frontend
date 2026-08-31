@@ -1,125 +1,225 @@
 import { useState, type ReactNode } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/AuthContext";
+import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
-  BookOpen,
-  FolderTree,
-  Building2,
-  GraduationCap,
-  BarChart3,
+  FileText,
+  FilePlus2,
   Upload,
-  LogOut,
-  Menu,
+  Building2,
+  FolderTree,
+  Tags,
+  BarChart3,
+  BookOpen,
   X,
+  Menu,
+  Search,
+  Bell,
+  Sun,
+  Moon,
+  LogOut,
+  User,
+  ChevronDown,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from "@/components/ui/dropdown-menu";
 
-// Define our navigation links in one place
+// Define navigation with better icons
 const NAVIGATION = [
-  { name: "Dashboard", to: "/admin", icon: LayoutDashboard, end: true },
-  { name: "Theses", to: "/admin/theses", icon: BookOpen },
-  { name: "Categories", to: "/admin/categories", icon: FolderTree },
-  { name: "Departments", to: "/admin/departments", icon: Building2 },
-  { name: "Institutions", to: "/admin/institutions", icon: GraduationCap },
-  { name: "Analytics", to: "/admin/analytics", icon: BarChart3 },
-  { name: "Bulk Upload", to: "/admin/upload", icon: Upload },
+  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/admin/theses", label: "Theses", icon: FileText },
+  { to: "/admin/theses/new", label: "Add Thesis", icon: FilePlus2 },
+  { to: "/admin/upload", label: "Bulk Upload", icon: Upload },
+  { to: "/admin/institutions", label: "Institutions", icon: Building2 },
+  { to: "/admin/departments", label: "Departments", icon: FolderTree },
+  { to: "/admin/categories", label: "Categories", icon: Tags },
+  { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
 ];
 
 export const AdminLayout = ({ children }: { children?: ReactNode }) => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  const initials = (user?.first_name || "A")
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   return (
-    <div className="flex h-screen w-full bg-gray-50">
+    <div className="flex h-screen w-full">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 z-20 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 transform flex-col border-r bg-white transition-transform duration-300 lg:static lg:flex lg:translate-x-0 ${
-          isMobileMenuOpen ? "translate-x-0 flex" : "-translate-x-full hidden"
-        }`}
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r bg-sidebar text-sidebar-foreground transition-transform lg:static lg:translate-x-0",
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
+        )}
       >
-        {/* Sidebar Header / Logo */}
-        <div className="flex h-16 items-center justify-between border-b px-6">
-          <span className="text-xl font-bold text-gray-900">Thesis Admin</span>
-          <button
+        <div className="flex h-16 items-center justify-between border-b px-5">
+          <Link to="/admin" className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+              <BookOpen className="h-4 w-4" />
+            </span>
+            <div className="leading-tight">
+              <p className="font-display text-sm font-semibold">Scholarum</p>
+              <p className="text-[10px] text-muted-foreground">Admin Panel</p>
+            </div>
+          </Link>
+          <Button
+            size="icon"
+            variant="ghost"
             className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <X className="h-5 w-5 text-gray-500" />
-          </button>
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex-1 space-y-1 overflow-y-auto p-4">
+        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
           {NAVIGATION.map((item) => (
             <NavLink
-              key={item.name}
+              key={item.to}
               to={item.to}
               end={item.end}
-              onClick={() => setIsMobileMenuOpen(false)} // Close mobile menu on click
+              onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                cn(
+                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                }`
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                    : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-foreground",
+                )
               }
             >
-              <item.icon className="h-5 w-5" />
-              {item.name}
+              <item.icon className="h-4 w-4" />
+              {item.label}
             </NavLink>
           ))}
         </nav>
 
-        {/* Sidebar Footer (User / Logout) */}
-        <div className="border-t p-4">
-          <button
-            onClick={logout}
-            className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
-          >
-            <LogOut className="h-5 w-5" />
-            Sign Out
-          </button>
+        <div className="border-t p-3">
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <Link to="/">View public site</Link>
+          </Button>
         </div>
       </aside>
 
       {/* Main Content Wrapper */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm lg:px-8">
-          <button
+        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur sm:px-6">
+          <Button
+            size="icon"
+            variant="ghost"
+            className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(true)}
-            className="rounded-md p-2 text-gray-500 hover:bg-gray-100 lg:hidden"
+            aria-label="Open menu"
           >
-            <Menu className="h-6 w-6" />
-          </button>
+            <Menu className="h-5 w-5" />
+          </Button>
 
-          {/* Spacer to push user info to the right on mobile */}
-          <div className="flex-1 lg:hidden"></div>
+          <div className="relative hidden flex-1 max-w-md sm:block">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Search the repository…"
+              className="h-9 pl-9"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && e.currentTarget.value)
+                  navigate(
+                    `/search?search=${encodeURIComponent(e.currentTarget.value)}`,
+                  );
+              }}
+            />
+          </div>
 
-          {/* User Profile Snippet */}
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">
-                {user?.first_name} {user?.last_name}
-              </p>
-              <p className="text-xs text-gray-500">{user?.role}</p>
-            </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow-sm">
-              {user?.first_name?.[0]}
-              {user?.last_name?.[0]}
-            </div>
+          <div className="ml-auto flex items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              aria-label="Notifications"
+              className="relative"
+            >
+              <Bell className="h-4 w-4" />
+              <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="ml-1 flex items-center gap-2 rounded-md p-1 pr-2 hover:bg-accent"
+                  aria-label="Account menu"
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                    {initials}
+                  </div>
+                  <span className="hidden text-sm font-medium sm:block">
+                    {user?.first_name}
+                  </span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-52">
+                <div className="px-2 py-1.5 text-sm">
+                  <p className="font-medium">{user?.first_name} {user?.last_name}</p>
+                  <p className="text-xs text-muted-foreground">{user?.email}</p>
+                </div>
+                <div className="my-1 border-t" />
+                <button
+                  className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-accent"
+                  onClick={() => {}}
+                >
+                  <User className="h-4 w-4" /> Profile
+                </button>
+                <button
+                  className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-accent"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4" /> Sign out
+                </button>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
-        {/* Page Content Area (This is where the child routes render) */}
+        {/* Page Content Area */}
         <main className="flex-1 overflow-y-auto p-4 lg:p-8">
           {children ?? <Outlet />}
         </main>
