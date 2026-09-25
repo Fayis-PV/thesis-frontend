@@ -96,7 +96,7 @@ export const Header = () => {
         "sticky top-3.5 z-50 flex items-center justify-between px-3.5 sm:px-6 transition-all duration-300 ease-out border shadow-sm max-w-[calc(100%-1rem)]",
         isHeroTop
           ? "bg-transparent backdrop-blur-[2px] shadow-none border-white/40"
-          : "bg-background/85 dark:bg-card/85 backdrop-blur-md shadow-lg shadow-black/5 border-white",
+          : "bg-background/65 dark:bg-card/45 backdrop-blur-md shadow-lg shadow-black/5 border-white",
       )}
     >
       {/* Brand Logo */}
