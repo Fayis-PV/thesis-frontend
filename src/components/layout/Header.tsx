@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/search", label: "Explore Research" },
+  { to: "/#departments-section", label: "Departments" },
+  { to: "/#categories-section", label: "Disciplines" },
 ];
 
 export const Header = () => {

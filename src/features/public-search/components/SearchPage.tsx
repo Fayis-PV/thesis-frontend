@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { LayoutGrid, List, SlidersHorizontal, BookOpen } from "lucide-react";
+import { LayoutGrid, List, SlidersHorizontal, BookOpen, X, TrendingUp } from "lucide-react";
 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePublicTheses, type SearchFilters } from "../hooks/usePublicTheses";
+import { useDepartments } from "@/features/departments/hooks/useDepartments";
+import { useCategories } from "@/features/categories/hooks/useCategories";
 
 import { SearchBar } from "./SearchBar";
 import { FilterSection } from "./FilterSection";
@@ -20,14 +22,17 @@ export const SearchPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
 
-  // Input states
+  const { data: departments } = useDepartments();
+  const { data: categories } = useCategories();
+
+  // Input state for search bar
   const initialSearchTerm =
     searchParams.get("q") || searchParams.get("search") || "";
   const [inputValue, setInputValue] = useState(initialSearchTerm);
   const debouncedSearchTerm = useDebounce(inputValue, 500);
 
-  // Filter & Sort states initialized from URL
-  const [filters, setFilters] = useState<SearchFilters>(() => {
+  // Derive filters and sorting directly from URL searchParams
+  const filters: SearchFilters = useMemo(() => {
     const f: SearchFilters = {};
     const dept = searchParams.get("department");
     if (dept) f.department = dept;
@@ -40,22 +45,77 @@ export const SearchPage = () => {
     const sup = searchParams.get("supervisor");
     if (sup) f.supervisor = sup;
     return f;
-  });
+  }, [searchParams]);
 
-  const [sortField, setSortField] = useState<string>(() => {
-    const ordering = searchParams.get("ordering");
-    return ordering
-      ? ordering.startsWith("-")
-        ? ordering.substring(1)
-        : ordering
-      : "";
-  });
-
-  const [sortOrder, setSortOrder] = useState<SortOrder>(() =>
-    searchParams.get("ordering")?.startsWith("-") ? "desc" : "asc",
-  );
+  const orderingParam = searchParams.get("ordering") || "";
+  const sortField = orderingParam.startsWith("-")
+    ? orderingParam.substring(1)
+    : orderingParam;
+  const sortOrder: SortOrder = orderingParam.startsWith("-") ? "desc" : "asc";
 
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
+
+  // Sync debounced search input to URL searchParams
+  useEffect(() => {
+    const currentQ = searchParams.get("search") || searchParams.get("q") || "";
+    if (debouncedSearchTerm !== currentQ) {
+      const params = new URLSearchParams(searchParams);
+      if (debouncedSearchTerm) {
+        params.set("search", debouncedSearchTerm);
+      } else {
+        params.delete("search");
+        params.delete("q");
+      }
+      params.delete("page");
+      setSearchParams(params, { replace: true });
+    }
+  }, [debouncedSearchTerm, searchParams, setSearchParams]);
+
+  const handleFiltersChange = (newFilters: SearchFilters) => {
+    const params = new URLSearchParams(searchParams);
+    ["department", "category", "year", "author", "supervisor"].forEach((k) =>
+      params.delete(k),
+    );
+    Object.entries(newFilters).forEach(([key, val]) => {
+      if (val) params.set(key, String(val));
+    });
+    params.delete("page");
+    setSearchParams(params);
+  };
+
+  const handleClearFilters = () => {
+    const params = new URLSearchParams(searchParams);
+    ["department", "category", "year", "author", "supervisor"].forEach((k) =>
+      params.delete(k),
+    );
+    params.delete("page");
+    setSearchParams(params);
+  };
+
+  const handleSortChange = (field: string, order: SortOrder) => {
+    const params = new URLSearchParams(searchParams);
+    if (!field) {
+      params.delete("ordering");
+    } else {
+      params.set("ordering", order === "desc" ? `-${field}` : field);
+    }
+    params.delete("page");
+    setSearchParams(params);
+  };
+
+  const handleRemoveSingleFilter = (key: keyof SearchFilters) => {
+    const params = new URLSearchParams(searchParams);
+    params.delete(key);
+    params.delete("page");
+    setSearchParams(params);
+  };
+
+  const handleRemoveSort = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete("ordering");
+    params.delete("page");
+    setSearchParams(params);
+  };
 
   // React Query fetch
   const { data, isLoading } = usePublicTheses({
@@ -127,6 +187,27 @@ export const SearchPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const currentDeptName = departments?.find(
+    (d) =>
+      d.id.toLowerCase() === filters.department?.toLowerCase() ||
+      d.name.toLowerCase() === filters.department?.toLowerCase(),
+  )?.name || filters.department;
+
+  const currentCatName = categories?.find(
+    (c) =>
+      c.id.toLowerCase() === filters.category?.toLowerCase() ||
+      c.name.toLowerCase() === filters.category?.toLowerCase(),
+  )?.name || filters.category;
+
+  const hasActiveFilters = Boolean(
+    filters.department ||
+      filters.category ||
+      filters.author ||
+      filters.supervisor ||
+      filters.year ||
+      sortField === "view_count",
+  );
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
@@ -162,20 +243,71 @@ export const SearchPage = () => {
             </Button>
           </div>
 
+          {/* Active Filter Indicators */}
+          {hasActiveFilters && (
+            <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center gap-2 text-xs">
+              <span className="text-gray-500 font-medium">Applied Filters:</span>
+              {currentDeptName && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 text-blue-800 rounded-md font-medium border border-blue-100">
+                  <span>Department: <strong>{currentDeptName}</strong></span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSingleFilter("department")}
+                    className="hover:text-blue-950 p-0.5 rounded"
+                    aria-label="Remove department filter"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              {currentCatName && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-900 rounded-md font-medium border border-amber-200">
+                  <span>Category: <strong>{currentCatName}</strong></span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSingleFilter("category")}
+                    className="hover:text-amber-950 p-0.5 rounded"
+                    aria-label="Remove category filter"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              {sortField === "view_count" && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-md font-medium border border-emerald-200">
+                  <TrendingUp className="h-3 w-3 text-emerald-600" />
+                  <span>Sorted by: <strong>Best Works (Most Viewed)</strong></span>
+                  <button
+                    type="button"
+                    onClick={handleRemoveSort}
+                    className="hover:text-emerald-950 p-0.5 rounded"
+                    aria-label="Reset sorting"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="text-gray-500 hover:text-red-600 text-xs ml-auto underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+
           {showFilters && (
             <div className="pt-4 border-t border-gray-100 flex flex-col lg:flex-row gap-4 justify-between items-start animate-in fade-in slide-in-from-top-2">
               <FilterSection
                 filters={filters}
-                onFiltersChange={setFilters}
-                onClearFilters={() => setFilters({})}
+                onFiltersChange={handleFiltersChange}
+                onClearFilters={handleClearFilters}
               />
               <SortOptions
                 sortField={sortField}
                 sortOrder={sortOrder}
-                onSortChange={(f, o) => {
-                  setSortField(f);
-                  setSortOrder(o);
-                }}
+                onSortChange={handleSortChange}
               />
             </div>
           )}

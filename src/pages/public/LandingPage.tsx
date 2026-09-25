@@ -1,183 +1,166 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
-  ArrowRight,
   BookOpenText,
   Building2,
   FolderTree,
   Eye,
   Download,
-  Layers,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { BrowseByDepartment } from "@/features/home/BrowseByDepartment";
+import { BrowseByCategories } from "@/features/home/BrowseByCategories";
+import { BestWorksSpotlight } from "@/features/home/BestWorksSpotlight";
+import { TOTAL_STATS } from "@/lib/academic-data";
 
-const SUGGESTED = [
+const SUGGESTED_TOPICS = [
   "Machine Learning",
   "Quantum Computing",
   "Federated Learning",
   "Photonics",
+  "Neuromorphic Silicon",
+  "Differential Privacy",
 ];
-
-// Mock data fetching - replace with actual API calls
-function useMockData() {
-  return {
-    featured: {
-      results: [],
-    },
-    latest: {
-      results: [],
-    },
-    stats: {
-      totalPublished: 0,
-      institutions: 0,
-      departments: 0,
-      totalViews: 0,
-      totalDownloads: 0,
-    },
-    categories: [],
-  };
-}
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [q, setQ] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const { stats, categories } = useMockData();
-
-  const submit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate(q ? `/search?search=${encodeURIComponent(q)}` : "/search");
+    if (searchQuery.trim()) {
+      navigate(`/search?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate("/search");
+    }
   };
 
-  const statItems = stats
-    ? [
-        { label: "Theses", value: stats.totalPublished, icon: BookOpenText },
-        { label: "Institutions", value: stats.institutions, icon: Building2 },
-        { label: "Departments", value: stats.departments, icon: FolderTree },
-        { label: "Total Views", value: stats.totalViews, icon: Eye },
-        {
-          label: "Total Downloads",
-          value: stats.totalDownloads,
-          icon: Download,
-        },
-      ]
-    : [];
-
-  const topCategories = (categories || []).slice(0, 6);
+  const statItems = [
+    {
+      label: "Published Theses",
+      value: TOTAL_STATS.totalPublished,
+      icon: BookOpenText,
+      unit: "dissertations",
+    },
+    {
+      label: "Partner Institutions",
+      value: TOTAL_STATS.institutions,
+      icon: Building2,
+      unit: "universities",
+    },
+    {
+      label: "Academic Departments",
+      value: TOTAL_STATS.departments,
+      icon: FolderTree,
+      unit: "faculties",
+    },
+    {
+      label: "Cumulative Readership",
+      value: TOTAL_STATS.totalViews,
+      icon: Eye,
+      unit: "views",
+    },
+    {
+      label: "Full-Text Downloads",
+      value: TOTAL_STATS.totalDownloads,
+      icon: Download,
+      unit: "downloads",
+    },
+  ];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
+
       <main className="flex-grow">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,hsl(var(--primary)/0.06),transparent)]" />
-          <div className="mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8">
-            <Badge
-              variant="outline"
-              className="mb-5 border-primary/20 bg-primary/5 text-primary"
-            >
-              <Layers className="mr-1.5 h-3 w-3" /> Academic Research Repository
-            </Badge>
-            <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-              Discover scholarly theses from{" "}
-              <span className="text-primary">leading institutions</span>
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Explore the comprehensive postgraduate research archives,
-              featuring groundbreaking theses across disciplines and
-              institutions.
+        {/* Editorial Hero Section */}
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-card/80 to-background py-20 sm:py-28 lg:py-32">
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(50%_50%_at_50%_0%,hsl(var(--primary)/0.05),transparent)]" />
+          <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+            {/* Clean unboxed kicker (Anti-Slop Zero-Pill discipline) */}
+            <p className="text-xs uppercase tracking-widest text-primary font-medium mb-3">
+              Open Academic Research Archive & Dissertation Repository
             </p>
+
+            <h1 className="font-display text-4xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance">
+              Discover scholarly theses from{" "}
+              <span className="text-primary italic">leading global institutions</span>
+            </h1>
+
+            <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed text-balance">
+              Explore open postgraduate research archives, doctoral dissertations, and faculty
+              investigations categorized by academic department and scholarly discipline.
+            </p>
+
+            {/* Central Search Form */}
             <form
-              onSubmit={submit}
-              className="mx-auto mt-8 flex max-w-2xl items-center gap-2"
+              onSubmit={handleSearchSubmit}
+              className="mx-auto mt-9 flex max-w-2xl items-center gap-2.5"
             >
               <div className="relative flex-1">
                 <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  value={q}
-                  onChange={(e) => setQ(e.target.value)}
-                  placeholder="Search by title, author, keyword, or abstract…"
-                  className="h-12 pl-10 text-base shadow-sm"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by title, author, supervisor, or keyword…"
+                  className="h-12 pl-10 text-base shadow-sm bg-card border-border"
                 />
               </div>
-              <Button type="submit" size="lg" className="h-12">
-                Search
+              <Button type="submit" size="lg" className="h-12 px-6">
+                Search Catalog
               </Button>
             </form>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground">
-              <span>Suggested:</span>
-              {SUGGESTED.map((s) => (
+
+            {/* Suggested Search Terms */}
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+              <span className="font-medium text-foreground/80">Suggested:</span>
+              {SUGGESTED_TOPICS.map((topic) => (
                 <button
-                  key={s}
+                  key={topic}
+                  type="button"
                   onClick={() =>
-                    navigate(`/search?search=${encodeURIComponent(s)}`)
+                    navigate(`/search?search=${encodeURIComponent(topic)}`)
                   }
-                  className="rounded-full border bg-background px-3 py-1 text-xs transition-colors hover:border-primary/30 hover:text-foreground"
+                  className="rounded-md border border-border/80 bg-card/60 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground hover:bg-card"
                 >
-                  {s}
+                  {topic}
                 </button>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Stats */}
-        <section className="border-b bg-muted/20">
-          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden px-4 sm:px-6 lg:grid-cols-5 lg:px-8">
-            {statItems.length === 0
-              ? Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="px-4 py-8 text-center">
-                    <div className="mx-auto mb-2 h-8 w-16 animate-pulse rounded bg-muted" />
-                    <div className="mx-auto h-4 w-20 animate-pulse rounded bg-muted" />
-                  </div>
-                ))
-              : statItems.map((s) => (
-                  <div key={s.label} className="px-4 py-8 text-center">
-                    <s.icon className="mx-auto mb-2 h-5 w-5 text-primary" />
-                    <p className="font-display text-2xl font-semibold">
-                      {s.value.toLocaleString()}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{s.label}</p>
-                  </div>
-                ))}
+        {/* Operational Statistics Ribbon */}
+        <section className="border-b border-border bg-muted/20">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-y md:divide-y-0 sm:grid-cols-3 lg:grid-cols-5 border-x border-border">
+            {statItems.map((item) => (
+              <div key={item.label} className="p-6 text-center bg-card/40">
+                <item.icon className="mx-auto mb-2 h-4 w-4 text-primary/80" />
+                <p className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground font-mono tabular-nums">
+                  {item.value.toLocaleString()}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1 font-medium">
+                  {item.label}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* Categories */}
-        <section className="border-y bg-muted/20">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Browse by category
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Explore research organised by discipline
-            </p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {topCategories.map((c: any) => (
-                <Link
-                  key={c.id}
-                  to={`/search?category=${c.id}`}
-                  className="group rounded-xl border bg-card p-5 shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-display text-lg font-medium group-hover:text-primary">
-                      {c.name}
-                    </h3>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">{c.slug}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Browse by Department Section */}
+        <BrowseByDepartment />
+
+        {/* Browse by Categories Section (Sorted by Most Visits) */}
+        <BrowseByCategories />
+
+        {/* Best Works Spotlight Section */}
+        <BestWorksSpotlight />
       </main>
+
       <Footer />
     </div>
   );

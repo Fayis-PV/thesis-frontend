@@ -37,6 +37,16 @@ export interface Department {
   institution: { id: string; name: string } | string; // Can be either an object or just the ID
   created_at: string;
   updated_at: string;
+  description?: string;
+  thesesCount?: number;
+  totalViews?: number;
+  topics?: string[];
+  topThesis?: {
+    id: string;
+    title: string;
+    author: string;
+    views: number;
+  };
 }
 
 export interface ThesisCategory {
@@ -45,6 +55,10 @@ export interface ThesisCategory {
   description: string | null;
   created_at: string;
   updated_at: string;
+  slug?: string;
+  visits?: number;
+  thesesCount?: number;
+  featuredTopic?: string;
 }
 
 export interface Thesis {
