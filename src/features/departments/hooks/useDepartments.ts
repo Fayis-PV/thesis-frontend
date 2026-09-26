@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import type { APIResponse, Department } from "@/types/api";
-import { ACADEMIC_DEPARTMENTS } from "@/lib/academic-data";
 
 export const useDepartments = () => {
   return useQuery({
@@ -11,13 +10,14 @@ export const useDepartments = () => {
         const response = await api.get<unknown, APIResponse<Department[]>>(
           "/thesis/departments/",
         );
+        console.log("Fetched departments from backend:", response.data);
         if (response?.data && response.data.length > 0) {
           return response.data;
         }
       } catch {
         // Fallback to local academic departments dataset when backend is offline
       }
-      return ACADEMIC_DEPARTMENTS;
+      throw new Error("Failed to fetch departments from the backend. Using local dataset instead.");
     },
   });
 };

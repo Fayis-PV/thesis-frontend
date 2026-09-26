@@ -1,7 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @layer base {
   :root {
@@ -31,10 +32,11 @@
     --chart-4: 28 80% 55%;
     --chart-5: 280 45% 55%;
     --radius: 0.625rem;
-    --font-heading: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-heading: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-display: ui-serif, Georgia, Cambria, "Times New Roman", serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-arabic: "Noto Naskh Arabic", "Amiri", serif;
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 30% 18%;
     --sidebar-primary: 222 47% 22%;
@@ -93,16 +95,163 @@
   ::selection {
     @apply bg-primary/15;
   }
+
+  /* Arabic text styling */
+  [lang="ar"] body,
+  .font-arabic {
+    font-family: var(--font-arabic);
+    line-height: 1.8;
+  }
+
+  /* RTL-aware transitions */
+  [dir="rtl"] .sidebar-translate-open {
+    transform: translateX(0);
+  }
+
+  [dir="rtl"] .sidebar-translate-closed {
+    transform: translateX(100%);
+  }
 }
 
 @layer utilities {
   .font-display {
     font-family: var(--font-display);
   }
+  .font-arabic {
+    font-family: var(--font-arabic);
+    line-height: 1.8;
+  }
   .text-balance {
     text-wrap: balance;
   }
   .scrollbar-thin {
     scrollbar-width: thin;
+  }
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* RTL-aware directional utilities */
+  [dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  /* Demo banner */
+  .demo-banner {
+    @apply bg-amber-500/10 border-amber-500/30 text-amber-700;
+  }
+  .dark .demo-banner {
+    @apply bg-amber-500/10 border-amber-500/20 text-amber-400;
+  }
+
+  /* Admin page container */
+  .admin-page {
+    @apply max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6;
+  }
+
+  /* Status badge colors */
+  .status-published {
+    @apply bg-emerald-50 text-emerald-700 border-emerald-200;
+  }
+  .status-approved {
+    @apply bg-blue-50 text-blue-700 border-blue-200;
+  }
+  .status-submitted {
+    @apply bg-amber-50 text-amber-700 border-amber-200;
+  }
+  .status-under_review {
+    @apply bg-purple-50 text-purple-700 border-purple-200;
+  }
+  .status-draft {
+    @apply bg-gray-50 text-gray-600 border-gray-200;
+  }
+  .status-rejected {
+    @apply bg-red-50 text-red-700 border-red-200;
+  }
+  .status-revision_requested {
+    @apply bg-orange-50 text-orange-700 border-orange-200;
+  }
+
+  /* Dark mode status badge colors */
+  .dark .status-published {
+    @apply bg-emerald-950/60 text-emerald-300 border-emerald-800/60;
+  }
+  .dark .status-approved {
+    @apply bg-blue-950/60 text-blue-300 border-blue-800/60;
+  }
+  .dark .status-submitted {
+    @apply bg-amber-950/60 text-amber-300 border-amber-800/60;
+  }
+  .dark .status-under_review {
+    @apply bg-purple-950/60 text-purple-300 border-purple-800/60;
+  }
+  .dark .status-draft {
+    @apply bg-gray-800/60 text-gray-300 border-gray-700;
+  }
+  .dark .status-rejected {
+    @apply bg-red-950/60 text-red-300 border-red-800/60;
+  }
+  .dark .status-revision_requested {
+    @apply bg-orange-950/60 text-orange-300 border-orange-800/60;
+  }
+
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  /* KPI card gradient backgrounds */
+  .kpi-blue {
+    @apply bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200 text-blue-950;
+  }
+  .dark .kpi-blue {
+    @apply bg-gradient-to-br from-blue-950/40 to-blue-900/20 border-blue-800/40 text-blue-300;
+  }
+  .kpi-emerald {
+    @apply bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200 text-emerald-950;
+  }
+  .dark .kpi-emerald {
+    @apply bg-gradient-to-br from-emerald-950/40 to-emerald-900/20 border-emerald-800/40 text-emerald-300;
+  }
+  .kpi-amber {
+    @apply bg-gradient-to-br from-amber-50 to-amber-100/50 border-amber-200 text-amber-950;
+  }
+  .dark .kpi-amber {
+    @apply bg-gradient-to-br from-amber-950/40 to-amber-900/20 border-amber-800/40 text-amber-300;
+  }
+  .kpi-purple {
+    @apply bg-gradient-to-br from-purple-50 to-purple-100/50 border-purple-200 text-purple-950;
+  }
+  .dark .kpi-purple {
+    @apply bg-gradient-to-br from-purple-950/40 to-purple-900/20 border-purple-800/40 text-purple-300;
+  }
+  .kpi-rose {
+    @apply bg-gradient-to-br from-rose-50 to-rose-100/50 border-rose-200 text-rose-950;
+  }
+  .dark .kpi-rose {
+    @apply bg-gradient-to-br from-rose-950/40 to-rose-900/20 border-rose-800/40 text-rose-300;
+  }
+  .kpi-slate {
+    @apply bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white;
+  }
+  .dark .kpi-slate {
+    @apply bg-gradient-to-br from-slate-900 to-slate-950 border-slate-800 text-slate-200;
+  }
+
+  /* Mixed-direction and typography helpers */
+  .bdi-isolate {
+    unicode-bidi: isolate;
+  }
+  .ltr-force {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: left;
+  }
+  [dir="rtl"] .ltr-force {
+    text-align: right;
   }
 }

@@ -43,9 +43,9 @@ export const DepartmentModal = ({ isOpen, onClose, department }: Props) => {
         name: department.name,
         code: department.code,
         institution:
-          typeof department.institution === "object"
+          typeof department.institution === "object" && department.institution !== null
             ? department.institution.id
-            : department.institution,
+            : (department.institution as string) || "",
       });
     } else {
       reset({ name: "", code: "", institution: "" });

@@ -1,50 +1,96 @@
 import type { HTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
-const cell = "border-b border-gray-200 px-4 py-3 text-sm";
 export function Table({
   className = "",
   ...props
 }: HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-auto">
+    <div className="relative w-full overflow-auto scrollbar-thin">
       <table
-        className={`w-full caption-bottom text-sm ${className}`}
+        className={cn("w-full caption-bottom text-sm", className)}
         {...props}
       />
     </div>
   );
 }
-export function TableHeader(props: HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead {...props} />;
+
+export function TableHeader({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLTableSectionElement>) {
+  return <thead className={cn("[&_tr]:border-b border-border bg-muted/40", className)} {...props} />;
 }
-export function TableBody(props: HTMLAttributes<HTMLTableSectionElement>) {
-  return <tbody {...props} />;
+
+export function TableBody({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLTableSectionElement>) {
+  return <tbody className={cn("[&_tr:last-child]:border-0", className)} {...props} />;
 }
+
+export function TableFooter({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLTableSectionElement>) {
+  return (
+    <tfoot
+      className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
+      {...props}
+    />
+  );
+}
+
 export function TableRow({
   className = "",
   ...props
 }: HTMLAttributes<HTMLTableRowElement>) {
   return (
     <tr
-      className={`border-b transition-colors hover:bg-gray-50 ${className}`}
+      className={cn(
+        "border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+        className
+      )}
       {...props}
     />
   );
 }
+
 export function TableHead({
   className = "",
   ...props
 }: ThHTMLAttributes<HTMLTableCellElement>) {
   return (
     <th
-      className={`${cell} text-left font-medium text-gray-500 ${className}`}
+      className={cn(
+        "h-10 px-4 text-start align-middle font-medium text-muted-foreground text-xs uppercase tracking-wider [&:has([role=checkbox])]:pe-0",
+        className
+      )}
       {...props}
     />
   );
 }
+
 export function TableCell({
   className = "",
   ...props
 }: TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={`${cell} ${className}`} {...props} />;
+  return (
+    <td
+      className={cn("p-4 align-middle text-start text-foreground [&:has([role=checkbox])]:pe-0", className)}
+      {...props}
+    />
+  );
+}
+
+export function TableCaption({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLTableCaptionElement>) {
+  return (
+    <caption
+      className={cn("mt-4 text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  );
 }

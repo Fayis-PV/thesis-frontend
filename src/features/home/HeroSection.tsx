@@ -1,135 +1,156 @@
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  Search,
+  BookOpenText,
+  Building2,
+  FolderTree,
+  Eye,
+  Download,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { TOTAL_STATS } from "@/lib/academic-data";
+import heroImage from "@/assets/layers.png"; 
+
+const SUGGESTED_TOPICS = [
+  "Machine Learning",
+  "Quantum Computing",
+  "Federated Learning",
+  "Photonics",
+  "Neuromorphic Silicon",
+  "Differential Privacy",
+];
 
 export const HeroSection = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/search?search=${encodeURIComponent(searchQuery.trim())}`);
     } else {
       navigate("/search");
     }
   };
 
+  const statItems = [
+    {
+      label: "Published Theses",
+      value: TOTAL_STATS.totalPublished,
+      icon: BookOpenText,
+      unit: "dissertations",
+    },
+    {
+      label: "Partner Institutions",
+      value: TOTAL_STATS.institutions,
+      icon: Building2,
+      unit: "universities",
+    },
+    {
+      label: "Academic Departments",
+      value: TOTAL_STATS.departments,
+      icon: FolderTree,
+      unit: "faculties",
+    },
+    {
+      label: "Cumulative Readership",
+      value: TOTAL_STATS.totalViews,
+      icon: Eye,
+      unit: "views",
+    },
+    {
+      label: "Full-Text Downloads",
+      value: TOTAL_STATS.totalDownloads,
+      icon: Download,
+      unit: "downloads",
+    },
+  ];
+
   return (
-    <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-gray-50">
-      <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover opacity-20"
-        >
-          <source src="/Home_gif.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-blue-50/90 to-white/90"></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-12 w-full">
-        <div className="max-w-5xl mx-auto text-center space-y-6">
-          <h1 className="text-3xl md:text-4xl lg:text-6xl font-serif font-bold leading-tight text-gray-900">
-            Where <span className="text-blue-700 italic">Sacred Tradition</span>{" "}
-            Meets <span className="text-blue-700">Academic Rigor</span>
-          </h1>
-
-          <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Explore the intellectual legacy of{" "}
-            <span className="font-semibold text-blue-600">
-              Darul Huda Islamic University
-            </span>
-            . From postgraduate theses to global journals—unlocking the
-            knowledge of tomorrow, rooted in the wisdom of the past.
+    <>
+      {/* Editorial Hero Section */}
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-card/80 to-background py-20 sm:py-28 lg:py-32">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(50%_50%_at_50%_0%,hsl(var(--primary)/0.05),transparent)]" />
+        <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+          {/* Clean unboxed kicker (Anti-Slop Zero-Pill discipline) */}
+          <p className="text-[8px] sm:text-xs uppercase tracking-widest text-primary font-medium my-3 border w-fit mx-auto px-1.5 py-1 rounded-full bg-primary/5 border-primary/30 flex items-center gap-1.5">
+            {/* imgage src/assets/hero.png */}
+            <img
+              src={heroImage}
+              alt="DHIU Logo"
+              className="h-3 object-cover float-left"
+            />
+            DHIU Academic Research Archive & Dissertation Repository
           </p>
 
-          <div className="pt-6 pb-4">
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="relative group">
-                <Input
-                  placeholder="Search for 'Islamic Finance', 'Fiqh', or 'Modern Theology'..."
-                  className="h-12 md:h-14 text-sm md:text-base px-5 md:px-6 pr-32 md:pr-40 border-2 border-blue-100 bg-white/80 backdrop-blur-sm focus-visible:border-blue-500 rounded-full shadow-lg transition-all duration-300"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button
-                  type="submit"
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 md:h-11 px-4 md:px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all duration-300 font-medium text-xs md:text-sm shadow-md"
-                >
-                  <Search className="h-4 w-4 mr-1.5" /> Search
-                </Button>
-              </div>
-              <div className="mt-3 flex flex-wrap justify-center items-center gap-2 text-xs text-gray-500">
-                <span>Popular:</span>
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("Islamic Finance")}
-                  className="text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded-full bg-blue-50 border border-blue-100"
-                >
-                  Islamic Finance
-                </button>
-                <span className="opacity-40">•</span>
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("Fiqh")}
-                  className="text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded-full bg-blue-50 border border-blue-100"
-                >
-                  Fiqh
-                </button>
-                <span className="opacity-40">•</span>
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("Aqeedah")}
-                  className="text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded-full bg-blue-50 border border-blue-100"
-                >
-                  Aqeedah
-                </button>
-              </div>
-            </form>
-          </div>
+          <h1 className="font-display text-4xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance">
+            Discover scholarly theses from{" "}
+            <span className="text-primary italic">
+              Darul Huda Islamic University
+            </span>
+          </h1>
 
-          <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <div className="p-3 backdrop-blur-sm bg-white/60 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-              <p className="text-2xl md:text-3xl font-serif font-bold text-blue-700">
-                2,000+
-              </p>
-              <p className="text-xs md:text-sm text-gray-600 mt-0.5">
-                Research Documents
-              </p>
+          <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed text-balance">
+            Explore open postgraduate research archives, doctoral dissertations,
+            and faculty investigations categorized by academic department and
+            scholarly discipline.
+          </p>
+
+          {/* Central Search Form */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className="mx-auto mt-12 flex max-w-2xl items-center gap-2.5"
+          >
+            <div className="relative flex-1">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by title, author, supervisor, or keyword…"
+                className="h-12 pl-10 text-base shadow-sm bg-card border-border"
+              />
             </div>
-            <div className="p-3 backdrop-blur-sm bg-white/60 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-              <p className="text-2xl md:text-3xl font-serif font-bold text-blue-700">
-                30+
-              </p>
-              <p className="text-xs md:text-sm text-gray-600 mt-0.5">
-                Years of Excellence
-              </p>
-            </div>
-            <div className="p-3 backdrop-blur-sm bg-white/60 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-              <p className="text-2xl md:text-3xl font-serif font-bold text-blue-700">
-                12+
-              </p>
-              <p className="text-xs md:text-sm text-gray-600 mt-0.5">
-                Academic Disciplines
-              </p>
-            </div>
-            <div className="p-3 backdrop-blur-sm bg-white/60 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-              <p className="text-2xl md:text-3xl font-serif font-bold text-blue-700">
-                24/7
-              </p>
-              <p className="text-xs md:text-sm text-gray-600 mt-0.5">
-                Global Access
-              </p>
-            </div>
+            <Button type="submit" size="lg" className="h-12 px-6">
+              Search Catalog
+            </Button>
+          </form>
+
+          {/* Suggested Search Terms */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+            <span className="font-medium text-foreground/80">Suggested:</span>
+            {SUGGESTED_TOPICS.map((topic) => (
+              <button
+                key={topic}
+                type="button"
+                onClick={() =>
+                  navigate(`/search?search=${encodeURIComponent(topic)}`)
+                }
+                className="rounded-md border border-border/80 bg-card/60 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground hover:bg-card"
+              >
+                {topic}
+              </button>
+            ))}
           </div>
         </div>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent z-10"></div>
-    </section>
+      </section>
+      {/* Operational Statistics Ribbon */}
+      <section className="border-b border-border bg-muted/20">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-y md:divide-y-0 sm:grid-cols-3 lg:grid-cols-5 border-x border-border">
+          {statItems.map((item) => (
+            <div key={item.label} className="p-6 text-center bg-card/40">
+              <item.icon className="mx-auto mb-2 h-4 w-4 text-primary/80" />
+              <p className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground font-mono tabular-nums">
+                {item.value.toLocaleString()}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1 font-medium">
+                {item.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>{" "}
+    </>
   );
 };

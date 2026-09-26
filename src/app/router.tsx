@@ -13,6 +13,8 @@ import LandingPage from "@/pages/public/LandingPage";
 import ThesisDetail from "@/pages/thesis/ThesisDetail";
 import SubmitThesis from "@/pages/thesis/SubmitThesis";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
+import ReportsPage from "@/pages/admin/ReportsPage";
+import SettingsPage from "@/pages/admin/SettingsPage";
 
 export const AppRouter = createBrowserRouter([
   {
@@ -72,8 +74,16 @@ export const AppRouter = createBrowserRouter([
             element: <AnalyticsPage />,
           },
           {
+            path: "reports",
+            element: <ReportsPage />,
+          },
+          {
             path: "upload",
             element: <ExcelUploadPage />,
+          },
+          {
+            path: "settings",
+            element: <SettingsPage />,
           },
         ],
       },

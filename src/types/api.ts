@@ -34,13 +34,21 @@ export interface Department {
   id: string;
   name: string;
   code: string;
-  institution: { id: string; name: string } | string; // Can be either an object or just the ID
+  description: string | null;
+  institution: {
+    id: string;
+    name: string;
+    code?: string;
+    country?: string;
+    website?: string | null;
+  } | string | null;
+  is_active?: boolean;
+  topics?: string[];
+  theses_count?: number;
   created_at: string;
   updated_at: string;
-  description?: string;
   thesesCount?: number;
   totalViews?: number;
-  topics?: string[];
   topThesis?: {
     id: string;
     title: string;

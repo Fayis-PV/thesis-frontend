@@ -92,7 +92,7 @@ export const Header = () => {
         borderColor: "#ffffff",
       }}
       className={cn(
-        "sticky top-3.5 z-50 flex items-center justify-between px-3.5 sm:px-6 transition-all duration-300 ease-out border shadow-sm max-w-[calc(100%-1rem)]",
+        "sticky top-3.5 z-50 flex items-center justify-between px-3.5 transition-all duration-300 ease-out border shadow-sm max-w-[calc(100%-1rem)]",
         !isScrolled
           ? "bg-transparent backdrop-blur-[2px] shadow-none border-white/40"
           : "bg-background/65 dark:bg-card/45 backdrop-blur-md shadow-lg shadow-black/5 border-white",
@@ -112,7 +112,7 @@ export const Header = () => {
           <BookOpen className="h-[19px] w-[19px]" />
         </span>
         <div className="leading-none hidden sm:block line-height-none">
-          <p className="font-display font-semibold tracking-tighter text-base sm:text-[20px] leading-none text-foreground">
+          <p className="font-display font-semibold tracking-tighter text-base sm:text-[20px] leading-tight text-foreground">
             DRP
           </p>
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-mono">

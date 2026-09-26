@@ -80,21 +80,19 @@ export const BrowseByDepartment = () => {
             <h2 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground text-balance">
               Browse Research by Department
             </h2>
-            <p className="mt-3 text-base text-muted-foreground leading-relaxed text-balance">
-              Examine doctoral dissertations and research archives across disciplines.
-              Select any department to filter its collection and discover its most-consulted works.
-            </p>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
+              <span className="font-mono tabular-nums font-semibold text-foreground text-sm">
+                {filteredAndSortedDepartments.length}
+              </span>
+              <span>Departments Listed</span>
+              <span aria-hidden="true">·</span>
+              <span className="text-primary font-medium">
+                Sorted by Best Works
+              </span>
+            </div>
           </div>
 
           {/* Quick Stats Pill Replacement: Clean inline counter */}
-          <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
-            <span className="font-mono tabular-nums font-semibold text-foreground text-sm">
-              {filteredAndSortedDepartments.length}
-            </span>
-            <span>Departments Listed</span>
-            <span aria-hidden="true">·</span>
-            <span className="text-primary font-medium">Sorted by Best Works</span>
-          </div>
         </div>
 
         {/* Toolbar: Search & Segmented Sort Buttons */}
@@ -174,7 +172,8 @@ export const BrowseByDepartment = () => {
               No matching departments found
             </h3>
             <p className="text-sm text-muted-foreground mt-1 max-w-sm mx-auto">
-              Try adjusting your filter keyword or search term to discover academic units.
+              Try adjusting your filter keyword or search term to discover
+              academic units.
             </p>
             <button
               type="button"
@@ -229,7 +228,11 @@ export const BrowseByDepartment = () => {
                         {dept.topics.slice(0, 3).map((topic, i) => (
                           <span key={topic} className="flex items-center gap-2">
                             <span>{topic}</span>
-                            {i < 2 && <span aria-hidden="true" className="text-border">·</span>}
+                            {i < 2 && (
+                              <span aria-hidden="true" className="text-border">
+                                ·
+                              </span>
+                            )}
                           </span>
                         ))}
                       </div>

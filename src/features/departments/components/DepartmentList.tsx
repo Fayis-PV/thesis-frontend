@@ -19,6 +19,7 @@ export const DepartmentList = () => {
     useState<Department | null>(null);
 
   const institutionName = (department: Department) => {
+    if (!department.institution) return undefined;
     const institutionId =
       typeof department.institution === "string"
         ? department.institution
