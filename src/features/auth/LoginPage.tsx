@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
-import { useForm } from "react-hook-form"; // Note: adjust to your exact react-hook-form imports
+import { useNavigate, useLocation, Navigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { BookOpen, Eye, EyeOff, ShieldCheck, ArrowLeft } from "lucide-react";
 
 import { api } from "@/lib/api";
 import { setTokens } from "@/lib/auth-utils";
 import { useAuth } from "./AuthContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import type { APIResponse, User } from "@/types/api";
 
 // 1. Define the Zod Schema for strict validation
@@ -27,6 +31,7 @@ export const LoginPage = () => {
   const location = useLocation();
   const { setUser, isAuthenticated, isLoading } = useAuth();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   // 2. Initialize React Hook Form
   const {
@@ -75,77 +80,117 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-10 shadow-lg">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-            Admin Login
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Access the Thesis Management System
+    <div className="grid min-h-screen lg:grid-cols-2">
+      {/* Left — branding */}
+      <div className="relative hidden flex-col justify-between bg-primary p-12 text-primary-foreground lg:flex">
+        <div className="absolute inset-0 -z-10 opacity-10 [background:repeating-linear-gradient(0deg,transparent,transparent_39px,hsl(var(--primary-foreground))_40px),repeating-linear-gradient(90deg,transparent,transparent_39px,hsl(var(--primary-foreground))_40px)]" />
+        <Link to="/" className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-foreground text-primary">
+            <BookOpen className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="font-display text-base font-semibold">Scholarum</p>
+            <p className="text-[11px] opacity-70">Thesis Repository</p>
+          </div>
+        </Link>
+        <div>
+          <ShieldCheck className="mb-4 h-8 w-8 opacity-80" />
+          <h1 className="font-display text-3xl font-semibold leading-tight">
+            Administration Control Panel
+          </h1>
+          <p className="mt-3 max-w-sm text-sm opacity-80">
+            Manage theses, review submissions, oversee institutions and monitor
+            repository analytics — all from a single scholarly workspace.
           </p>
         </div>
+        <p className="text-xs opacity-60">
+          © {new Date().getFullYear()} Scholarum Repository
+        </p>
+      </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-4">
-            {/* Email Field */}
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
-              <input
+      {/* Right — form */}
+      <div className="flex items-center justify-center px-4 py-12 sm:px-6">
+        <div className="w-full max-w-sm">
+          <Button asChild variant="ghost" size="sm" className="mb-6 -ml-2">
+            <Link to="/">
+              <ArrowLeft className="h-4 w-4" /> Back to repository
+            </Link>
+          </Button>
+          <h2 className="font-display text-2xl font-semibold tracking-tight">
+            Sign in
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Enter your administrator credentials to continue.
+          </p>
+
+          {serverError && (
+            <div className="mt-6 rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {serverError}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
                 id="email"
                 type="email"
+                placeholder="admin@repository.edu"
                 {...register("email")}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
+                aria-invalid={!!errors.email}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="text-xs text-destructive">
                   {errors.email.message}
                 </p>
               )}
             </div>
-
-            {/* Password Field */}
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                {...register("password")}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
-              />
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <a
+                  href="#"
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                >
+                  Forgot password?
+                </a>
+              </div>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  {...register("password")}
+                  aria-invalid={!!errors.password}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="text-xs text-destructive">
                   {errors.password.message}
                 </p>
               )}
             </div>
-          </div>
-
-          {/* Server Error Message */}
-          {serverError && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-700">{serverError}</p>
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-400"
-          >
-            {isSubmitting ? "Signing in..." : "Sign in"}
-          </button>
-        </form>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Signing in…" : "Sign in"}
+            </Button>
+          </form>
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Demo credentials are pre-filled. Click sign in to enter the admin
+            panel.
+          </p>
+        </div>
       </div>
     </div>
   );

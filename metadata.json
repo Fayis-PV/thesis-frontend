@@ -1,0 +1,7 @@
+{
+  "name": "Thesis Repository",
+  "description": "Comprehensive academic research repository to discover, search, review, and manage scholarly theses and dissertations across institutions and departments.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
