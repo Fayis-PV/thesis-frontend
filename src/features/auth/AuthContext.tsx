@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { api } from "@/lib/api";
-import { clearTokens } from "@/lib/auth-utils";
+import { clearTokens, hasDevLoginSession } from "@/lib/auth-utils";
 import type { User } from "@/types/api";
 
 interface AuthContextType {
@@ -48,6 +48,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const loadUser = async () => {
+      if (import.meta.env.DEV && hasDevLoginSession()) {
+        setUser({
+          id: "dev-admin",
+          email: "fayispvchelari@gmail.com",
+          first_name: "Dev",
+          last_name: "Administrator",
+          role: "admin",
+          is_active: true,
+        });
+        setIsLoading(false);
+        return;
+      }
+
       if (!localStorage.getItem("accessToken")) {
         setIsLoading(false);
         return;

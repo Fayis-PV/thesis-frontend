@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { BookOpen, Eye, EyeOff, ShieldCheck, ArrowLeft } from "lucide-react";
 
 import { api } from "@/lib/api";
-import { setTokens } from "@/lib/auth-utils";
+import { setDevLoginSession, setTokens } from "@/lib/auth-utils";
 import { useAuth } from "./AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,17 @@ type LoginResponse = APIResponse<{
   refresh: string;
   user: User;
 }>;
+
+const DEV_ADMIN_EMAIL = "fayispvchelari@gmail.com";
+const DEV_ADMIN_PASSWORD = "3144";
+const DEV_ADMIN_USER: User = {
+  id: "dev-admin",
+  email: DEV_ADMIN_EMAIL,
+  first_name: "Dev",
+  last_name: "Administrator",
+  role: "admin",
+  is_active: true,
+};
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -74,7 +85,22 @@ export const LoginPage = () => {
         );
       }
     } catch (error: unknown) {
-      const err = error as { message?: string };
+      const err = error as { message?: string; status?: number };
+      const isBackendUnavailable = !err.status;
+
+      if (
+        import.meta.env.DEV &&
+        isBackendUnavailable &&
+        data.email.toLowerCase() === DEV_ADMIN_EMAIL &&
+        data.password === DEV_ADMIN_PASSWORD
+      ) {
+        setDevLoginSession();
+        setTokens("dev-access-token", "dev-refresh-token");
+        setUser(DEV_ADMIN_USER);
+        navigate(from, { replace: true });
+        return;
+      }
+
       setServerError(err.message || "Invalid credentials. Please try again.");
     }
   };
