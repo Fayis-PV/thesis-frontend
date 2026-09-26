@@ -24,9 +24,8 @@ export const Header = () => {
   const [activeSection, setActiveSection] = useState<string>("/");
   const location = useLocation();
 
-  const isHomePage = location.pathname === "/";
+  const isHomePage = location.pathname === "/" ;
   // "stretch by width on hero page. transparent bg."
-  const isHeroTop = isHomePage && !isScrolled;
 
   // Track scroll position to determine floating state & active page sections
   useEffect(() => {
@@ -83,18 +82,18 @@ export const Header = () => {
   return (
     <header
       style={{
-        width: isHeroTop ? "min(1280px, calc(100% - 2rem))" : "800.2px",
+        width: !isScrolled ? "min(1280px, calc(100% - 2rem))" : "800.2px",
         height: "61.8px",
         paddingTop: "0px",
         paddingBottom: "0px",
-        borderRadius: "20px",
+        borderRadius: "30px",
         marginLeft: "auto",
         marginRight: "auto",
         borderColor: "#ffffff",
       }}
       className={cn(
         "sticky top-3.5 z-50 flex items-center justify-between px-3.5 sm:px-6 transition-all duration-300 ease-out border shadow-sm max-w-[calc(100%-1rem)]",
-        isHeroTop
+        !isScrolled
           ? "bg-transparent backdrop-blur-[2px] shadow-none border-white/40"
           : "bg-background/65 dark:bg-card/45 backdrop-blur-md shadow-lg shadow-black/5 border-white",
       )}
@@ -109,11 +108,11 @@ export const Header = () => {
           }
         }}
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/20">
-          <BookOpen className="h-4.5 w-4.5" />
+        <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/20">
+          <BookOpen className="h-[19px] w-[19px]" />
         </span>
-        <div className="leading-tight hidden sm:block">
-          <p className="font-display font-semibold tracking-tight text-base sm:text-lg text-foreground">
+        <div className="leading-none hidden sm:block line-height-none">
+          <p className="font-display font-semibold tracking-tighter text-base sm:text-[20px] leading-none text-foreground">
             DRP
           </p>
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-mono">
