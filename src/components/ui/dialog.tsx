@@ -24,7 +24,7 @@ export function DialogContent({
 }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 bg-white p-6 shadow-lg sm:rounded-lg ${className}`}
+      className={`fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 bg-card text-card-foreground border border-border p-6 shadow-xl sm:rounded-xl ${className}`}
       onClick={(event) => event.stopPropagation()}
       {...props}
     >
@@ -33,7 +33,7 @@ export function DialogContent({
   );
 }
 export function DialogDescription(props: HTMLAttributes<HTMLParagraphElement>) {
-  return <p className="text-sm text-gray-500" {...props} />;
+  return <p className="text-sm text-muted-foreground" {...props} />;
 }
 export function DialogFooter({
   className = "",
@@ -50,5 +50,5 @@ export function DialogHeader({
   );
 }
 export function DialogTitle(props: HTMLAttributes<HTMLHeadingElement>) {
-  return <h2 className="text-lg font-semibold" {...props} />;
+  return <h2 className="text-lg font-semibold text-foreground" {...props} />;
 }

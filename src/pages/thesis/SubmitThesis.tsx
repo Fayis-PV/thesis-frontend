@@ -130,7 +130,7 @@ export default function SubmitThesis() {
   if (id && isLoadingThesis) {
     return (
       <div className="flex justify-center p-20">
-        <Loader2 className="animate-spin text-blue-600" />
+        <Loader2 className="animate-spin text-primary" />
       </div>
     );
   }
@@ -140,17 +140,17 @@ export default function SubmitThesis() {
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-foreground">
               {id ? "Edit Thesis" : "Submit New Thesis"}
             </h1>
-            <p className="text-gray-500 mt-1">
+            <p className="text-muted-foreground mt-1">
               Publish academic research directly to the central database.
             </p>
           </div>
           {!id && (
             <Button
               variant="outline"
-              className="border-blue-200 text-blue-700 bg-blue-50"
+              className="border-primary/20 text-primary bg-primary/10 hover:bg-primary/20"
               onClick={() => setIsExcelModalOpen(true)}
             >
               <UploadCloud className="mr-2 h-4 w-4" /> Bulk Excel Upload
@@ -160,10 +160,10 @@ export default function SubmitThesis() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 space-y-8"
+          className="bg-card text-card-foreground p-8 rounded-xl shadow-xs border border-border space-y-8"
         >
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold border-b border-gray-100 pb-2">
+            <h2 className="text-lg font-semibold border-b border-border pb-2 text-foreground">
               Core Information
             </h2>
 
@@ -172,10 +172,10 @@ export default function SubmitThesis() {
               <Input
                 {...register("title")}
                 placeholder="Complete research title"
-                className="bg-gray-50 border-gray-200"
+                className="bg-muted/40 border-border"
               />
               {errors.title && (
-                <p className="text-xs text-red-500">{errors.title.message}</p>
+                <p className="text-xs text-destructive">{errors.title.message}</p>
               )}
             </div>
 
@@ -185,10 +185,10 @@ export default function SubmitThesis() {
                 <Input
                   {...register("author_name")}
                   placeholder="Student/Researcher Name"
-                  className="bg-gray-50 border-gray-200"
+                  className="bg-muted/40 border-border"
                 />
                 {errors.author_name && (
-                  <p className="text-xs text-red-500">
+                  <p className="text-xs text-destructive">
                     {errors.author_name.message}
                   </p>
                 )}
@@ -198,10 +198,10 @@ export default function SubmitThesis() {
                 <Input
                   {...register("supervisor_name")}
                   placeholder="Primary Guide"
-                  className="bg-gray-50 border-gray-200"
+                  className="bg-muted/40 border-border"
                 />
                 {errors.supervisor_name && (
-                  <p className="text-xs text-red-500">
+                  <p className="text-xs text-destructive">
                     {errors.supervisor_name.message}
                   </p>
                 )}
@@ -210,7 +210,7 @@ export default function SubmitThesis() {
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold border-b border-gray-100 pb-2">
+            <h2 className="text-lg font-semibold border-b border-border pb-2 text-foreground">
               Academic Taxonomy
             </h2>
 
@@ -225,7 +225,7 @@ export default function SubmitThesis() {
                       value={field.value || ""}
                       onValueChange={field.onChange}
                     >
-                      <SelectTrigger className="bg-gray-50">
+                      <SelectTrigger className="bg-muted/40 border-border">
                         <SelectValue placeholder="Select institution" />
                       </SelectTrigger>
                       <SelectContent
@@ -242,7 +242,7 @@ export default function SubmitThesis() {
                   )}
                 />
                 {errors.institution_id && (
-                  <p className="text-xs text-red-500">
+                  <p className="text-xs text-destructive">
                     {errors.institution_id.message}
                   </p>
                 )}
@@ -259,7 +259,7 @@ export default function SubmitThesis() {
                       value={field.value || ""}
                       onValueChange={field.onChange}
                     >
-                      <SelectTrigger className="bg-gray-50">
+                      <SelectTrigger className="bg-muted/40 border-border">
                         <SelectValue placeholder="Select department" />
                       </SelectTrigger>
                       <SelectContent
@@ -276,7 +276,7 @@ export default function SubmitThesis() {
                   )}
                 />
                 {errors.department_id && (
-                  <p className="text-xs text-red-500">
+                  <p className="text-xs text-destructive">
                     {errors.department_id.message}
                   </p>
                 )}
@@ -292,7 +292,7 @@ export default function SubmitThesis() {
                       value={field.value || ""}
                       onValueChange={field.onChange}
                     >
-                      <SelectTrigger className="bg-gray-50">
+                      <SelectTrigger className="bg-muted/40 border-border">
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent
@@ -309,7 +309,7 @@ export default function SubmitThesis() {
                   )}
                 />
                 {errors.category_id && (
-                  <p className="text-xs text-red-500">
+                  <p className="text-xs text-destructive">
                     {errors.category_id.message}
                   </p>
                 )}
@@ -320,14 +320,14 @@ export default function SubmitThesis() {
                 <Input
                   type="date"
                   {...register("publication_date")}
-                  className="bg-gray-50 border-gray-200"
+                  className="bg-muted/40 border-border"
                 />
               </div>
             </div>
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold border-b border-gray-100 pb-2">
+            <h2 className="text-lg font-semibold border-b border-border pb-2 text-foreground">
               Content & Document
             </h2>
 
@@ -337,10 +337,10 @@ export default function SubmitThesis() {
                 {...register("abstract")}
                 rows={6}
                 placeholder="Comprehensive summary..."
-                className="bg-gray-50 border-gray-200 resize-none"
+                className="bg-muted/40 border-border resize-none"
               />
               {errors.abstract && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.abstract.message}
                 </p>
               )}
@@ -351,10 +351,10 @@ export default function SubmitThesis() {
               <Input
                 {...register("keywords")}
                 placeholder="e.g. Fiqh, Machine Learning, Sociology"
-                className="bg-gray-50 border-gray-200"
+                className="bg-muted/40 border-border"
               />
               {errors.keywords && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.keywords.message}
                 </p>
               )}
@@ -362,30 +362,30 @@ export default function SubmitThesis() {
 
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
-                <LinkIcon className="h-4 w-4 text-blue-600" /> Document URL
+                <LinkIcon className="h-4 w-4 text-primary" /> Document URL
                 (Google Drive / Direct PDF)
               </Label>
               <Input
                 {...register("file_url")}
                 placeholder="https://drive.google.com/..."
-                className="bg-gray-50 border-gray-200"
+                className="bg-muted/40 border-border"
               />
               {errors.file_url && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-destructive">
                   {errors.file_url.message}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-6 border-t border-gray-100">
-            <p className="text-sm text-gray-500">
+          <div className="flex justify-between items-center pt-6 border-t border-border">
+            <p className="text-sm text-muted-foreground">
               Ensure all metadata is correct before publishing.
             </p>
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 px-8 h-11 shadow-sm"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-11 shadow-sm"
             >
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

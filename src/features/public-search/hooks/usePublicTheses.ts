@@ -73,6 +73,11 @@ function filterLocalTheses(filters: SearchFilters): PaginatedResponse {
     list = list.filter((t) => t.supervisor_name.toLowerCase().includes(s));
   }
 
+  if (filters.status && filters.status !== "all") {
+    const stat = filters.status.toLowerCase();
+    list = list.filter((t) => (t.status || "draft").toLowerCase() === stat);
+  }
+
   // Ordering
   if (filters.ordering) {
     const isDesc = filters.ordering.startsWith("-");
@@ -135,7 +140,7 @@ export const usePublicTheses = (filters: SearchFilters) => {
               year: filters.year || undefined,
               author: filters.author || undefined,
               supervisor: filters.supervisor || undefined,
-              status: filters.status || "published",
+              status: filters.status && filters.status !== "all" ? filters.status : undefined,
               ordering: filters.ordering || undefined,
               page: filters.page || 1,
             },

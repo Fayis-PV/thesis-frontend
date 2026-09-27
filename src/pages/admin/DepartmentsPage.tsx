@@ -102,25 +102,25 @@ export default function DepartmentsPage() {
       <div className="space-y-6 max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Departments</h2>
-            <p className="text-gray-500 mt-1">Manage academic branches.</p>
+            <h2 className="text-3xl font-bold text-foreground">Departments</h2>
+            <p className="text-muted-foreground mt-1">Manage academic branches.</p>
           </div>
           <Button
             onClick={() => handleOpen()}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             <Plus className="mr-2 h-4 w-4" /> Add Department
           </Button>
         </div>
 
-        <Card className="shadow-sm border-gray-200">
-          <CardHeader className="bg-gray-50/50 border-b border-gray-100">
-            <CardTitle>Active Departments</CardTitle>
+        <Card className="shadow-xs border-border bg-card">
+          <CardHeader className="bg-muted/40 border-b border-border">
+            <CardTitle className="text-foreground">Active Departments</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {isLoading ? (
               <div className="p-10 flex justify-center">
-                <Loader2 className="animate-spin text-blue-600" />
+                <Loader2 className="animate-spin text-primary" />
               </div>
             ) : (
               <Table>
@@ -135,20 +135,20 @@ export default function DepartmentsPage() {
                 </TableHeader>
                 <TableBody>
                   {departments.map((dept) => (
-                    <TableRow key={dept.id}>
-                      <TableCell className="font-medium">{dept.name}</TableCell>
+                    <TableRow key={dept.id} className="border-border">
+                      <TableCell className="font-semibold text-foreground">{dept.name}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1.5">
-                          <Building2 className="h-3 w-3 text-gray-400" />{" "}
-                          {dept.institution?.name}
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Building2 className="h-3 w-3" />{" "}
+                          <span className="text-foreground">{dept.institution?.name}</span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="font-mono">
+                        <Badge variant="outline" className="font-mono border-border text-foreground">
                           {dept.code}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-center text-emerald-600 font-medium">
+                      <TableCell className="text-center text-emerald-600 dark:text-emerald-400 font-medium">
                         {dept.thesis_count}
                       </TableCell>
                       <TableCell className="text-right">
@@ -167,7 +167,7 @@ export default function DepartmentsPage() {
                                 if (confirm("Deactivate?"))
                                   remove.mutate(dept.id);
                               }}
-                              className="text-red-600"
+                              className="text-destructive focus:text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" /> Deactivate
                             </DropdownMenuItem>
@@ -191,7 +191,7 @@ export default function DepartmentsPage() {
             className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none"
             aria-label="Close department dialog"
           >
-            <X className="h-5 w-5 text-gray-500 hover:text-gray-900" />
+            <X className="h-5 w-5 text-muted-foreground hover:text-foreground" />
           </button>
           <DialogHeader>
             <DialogTitle>
@@ -240,7 +240,7 @@ export default function DepartmentsPage() {
               <Button
                 type="submit"
                 disabled={create.isPending || update.isPending}
-                className="bg-blue-600 hover:bg-blue-700 w-full"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
               >
                 {editingId ? "Update" : "Save"}
               </Button>

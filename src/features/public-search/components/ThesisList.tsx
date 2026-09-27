@@ -22,14 +22,14 @@ export const ThesisList: React.FC<Props> = ({
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="animate-pulse flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm h-64"
+            className="animate-pulse flex flex-col bg-card border border-border rounded-xl overflow-hidden shadow-xs h-64"
           >
             <div className="p-6 pb-3 space-y-4">
-              <div className="h-6 bg-gray-200 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-6 bg-muted rounded w-3/4"></div>
+              <div className="h-4 bg-muted rounded w-1/2"></div>
             </div>
             <div className="p-6 pt-2 space-y-4 flex-1">
-              <div className="h-16 bg-gray-100 rounded w-full"></div>
+              <div className="h-16 bg-muted/60 rounded w-full"></div>
             </div>
           </div>
         ))}
@@ -39,10 +39,10 @@ export const ThesisList: React.FC<Props> = ({
 
   if (theses.length === 0) {
     return (
-      <div className="bg-white border border-gray-200 rounded-xl p-12 flex flex-col items-center text-center shadow-sm">
-        <AlertCircle className="h-12 w-12 text-gray-300 mb-4" />
-        <h3 className="text-lg font-bold text-gray-900">No theses found</h3>
-        <p className="text-gray-500 mt-1">
+      <div className="bg-card border border-border rounded-xl p-12 flex flex-col items-center text-center shadow-xs">
+        <AlertCircle className="h-12 w-12 text-muted-foreground/40 mb-4" />
+        <h3 className="text-lg font-bold text-foreground">No theses found</h3>
+        <p className="text-muted-foreground mt-1">
           Try adjusting your search terms or clearing some filters.
         </p>
       </div>

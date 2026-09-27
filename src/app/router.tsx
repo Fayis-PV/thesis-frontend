@@ -15,6 +15,7 @@ import SubmitThesis from "@/pages/thesis/SubmitThesis";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import ReportsPage from "@/pages/admin/ReportsPage";
 import SettingsPage from "@/pages/admin/SettingsPage";
+import AdminThesisWorkspace from "@/pages/admin/AdminThesisWorkspace";
 
 export const AppRouter = createBrowserRouter([
   {
@@ -50,7 +51,15 @@ export const AppRouter = createBrowserRouter([
             element: <ThesesManagement />,
           },
           {
+            path: "theses/:id",
+            element: <AdminThesisWorkspace />,
+          },
+          {
             path: "theses/create",
+            element: <SubmitThesis />,
+          },
+          {
+            path: "theses/new",
             element: <SubmitThesis />,
           },
           {

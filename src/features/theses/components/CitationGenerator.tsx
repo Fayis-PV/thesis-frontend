@@ -24,7 +24,7 @@ export default function CitationGenerator({ thesis }: { thesis: Thesis }) {
     <div>
       <Button
         variant="outline"
-        className="font-medium bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
+        className="font-medium bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-foreground border-primary/20 hover:bg-primary/20 transition-colors"
         onClick={handleCopy}
       >
         {copied ? (

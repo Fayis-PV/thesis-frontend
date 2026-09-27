@@ -67,15 +67,15 @@ export const DepartmentalPathways = () => {
   return (
     <section
       id="departments"
-      className="py-16 md:py-24 bg-gray-50 border-b border-gray-200"
+      className="py-16 md:py-24 bg-muted/20 border-b border-border"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3 text-gray-900">
-            Explore Theses by <span className="text-blue-600">Department</span>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3 text-foreground">
+            Explore Theses by <span className="text-primary">Department</span>
           </h2>
-          <div className="w-20 h-1.5 bg-blue-600 mx-auto mb-4 rounded-full"></div>
-          <p className="max-w-3xl mx-auto text-base text-gray-600 leading-relaxed">
+          <div className="w-20 h-1.5 bg-primary mx-auto mb-4 rounded-full"></div>
+          <p className="max-w-3xl mx-auto text-base text-muted-foreground leading-relaxed">
             Browse research organized by academic discipline. Click any
             department to discover theses and dissertations.
           </p>
@@ -88,7 +88,7 @@ export const DepartmentalPathways = () => {
               onClick={() =>
                 navigate(`/search?department=${encodeURIComponent(dept.name)}`)
               }
-              className="group relative overflow-hidden rounded-xl bg-white border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
+              className="group relative overflow-hidden rounded-xl bg-card border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300 cursor-pointer text-card-foreground"
             >
               <div className="relative p-5 min-h-[180px] flex flex-col">
                 <div
@@ -97,14 +97,14 @@ export const DepartmentalPathways = () => {
                   <div className="text-white">{dept.icon}</div>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="text-base font-serif font-semibold text-gray-900 mb-1.5 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-base font-serif font-semibold text-foreground mb-1.5 group-hover:text-primary transition-colors">
                     {dept.name}
                   </h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {dept.description}
                   </p>
                 </div>
-                <div className="mt-3 flex items-center text-blue-600 transition-colors">
+                <div className="mt-3 flex items-center text-primary transition-colors">
                   <span className="text-xs font-medium">View Theses</span>
                   <svg
                     className="ml-1.5 h-3 w-3 group-hover:translate-x-1 transition-transform"

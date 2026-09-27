@@ -33,9 +33,9 @@ export default function ThesisMetadata({ thesis }: { thesis: Thesis }) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-      <h2 className="text-lg font-semibold mb-4 text-gray-900 flex items-center gap-2">
-        <FileText className="h-5 w-5 text-blue-600" /> Thesis Information
+    <div className="bg-card text-card-foreground p-6 rounded-xl shadow-xs border border-border">
+      <h2 className="text-lg font-semibold mb-4 text-foreground flex items-center gap-2">
+        <FileText className="h-5 w-5 text-primary" /> Thesis Information
       </h2>
 
       {thesis.status && (
@@ -46,45 +46,45 @@ export default function ThesisMetadata({ thesis }: { thesis: Thesis }) {
 
       <div className="space-y-4">
         <div className="flex items-start gap-3">
-          <Building2 className="h-4 w-4 text-gray-400 mt-1" />
+          <Building2 className="h-4 w-4 text-muted-foreground mt-1" />
           <div>
-            <p className="text-xs text-gray-500">Institution</p>
-            <p className="text-sm font-medium">{thesis.institution?.name}</p>
+            <p className="text-xs text-muted-foreground">Institution</p>
+            <p className="text-sm font-medium text-foreground">{thesis.institution?.name}</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <GraduationCap className="h-4 w-4 text-gray-400 mt-1" />
+          <GraduationCap className="h-4 w-4 text-muted-foreground mt-1" />
           <div>
-            <p className="text-xs text-gray-500">Department</p>
-            <p className="text-sm font-medium">{thesis.department?.name}</p>
+            <p className="text-xs text-muted-foreground">Department</p>
+            <p className="text-sm font-medium text-foreground">{thesis.department?.name}</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <User className="h-4 w-4 text-gray-400 mt-1" />
+          <User className="h-4 w-4 text-muted-foreground mt-1" />
           <div>
-            <p className="text-xs text-gray-500">Author</p>
-            <p className="text-sm font-medium">{thesis.author_name}</p>
+            <p className="text-xs text-muted-foreground">Author</p>
+            <p className="text-sm font-medium text-foreground">{thesis.author_name}</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Users className="h-4 w-4 text-gray-400 mt-1" />
+          <Users className="h-4 w-4 text-muted-foreground mt-1" />
           <div>
-            <p className="text-xs text-gray-500">Supervisor</p>
-            <p className="text-sm font-medium">{thesis.supervisor_name}</p>
+            <p className="text-xs text-muted-foreground">Supervisor</p>
+            <p className="text-sm font-medium text-foreground">{thesis.supervisor_name}</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Calendar className="h-4 w-4 text-gray-400 mt-1" />
+          <Calendar className="h-4 w-4 text-muted-foreground mt-1" />
           <div>
-            <p className="text-xs text-gray-500">Publication Year</p>
-            <p className="text-sm font-medium">{thesis.year}</p>
+            <p className="text-xs text-muted-foreground">Publication Year</p>
+            <p className="text-sm font-medium text-foreground">{thesis.year}</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Globe className="h-4 w-4 text-gray-400 mt-1" />
+          <Globe className="h-4 w-4 text-muted-foreground mt-1" />
           <div>
-            <p className="text-xs text-gray-500">Language</p>
-            <p className="text-sm font-medium uppercase">
+            <p className="text-xs text-muted-foreground">Language</p>
+            <p className="text-sm font-medium uppercase text-foreground">
               {thesis.language || "EN"}
             </p>
           </div>
@@ -94,26 +94,26 @@ export default function ThesisMetadata({ thesis }: { thesis: Thesis }) {
       <Separator className="my-5" />
 
       <div className="grid grid-cols-3 gap-3 text-center">
-        <div className="p-3 bg-gray-50 rounded-lg">
-          <Eye className="h-4 w-4 mx-auto mb-1 text-gray-400" />
-          <p className="text-lg font-bold text-gray-900">
+        <div className="p-3 bg-muted/30 rounded-lg border border-border/40">
+          <Eye className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+          <p className="text-lg font-bold text-foreground font-mono tabular-nums">
             {thesis.view_count || 0}
           </p>
-          <p className="text-[10px] text-gray-500">Views</p>
+          <p className="text-[10px] text-muted-foreground">Views</p>
         </div>
-        <div className="p-3 bg-gray-50 rounded-lg">
-          <Download className="h-4 w-4 mx-auto mb-1 text-gray-400" />
-          <p className="text-lg font-bold text-gray-900">
+        <div className="p-3 bg-muted/30 rounded-lg border border-border/40">
+          <Download className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+          <p className="text-lg font-bold text-foreground font-mono tabular-nums">
             {thesis.download_count || 0}
           </p>
-          <p className="text-[10px] text-gray-500">Downloads</p>
+          <p className="text-[10px] text-muted-foreground">Downloads</p>
         </div>
-        <div className="p-3 bg-gray-50 rounded-lg">
-          <Quote className="h-4 w-4 mx-auto mb-1 text-gray-400" />
-          <p className="text-lg font-bold text-gray-900">
+        <div className="p-3 bg-muted/30 rounded-lg border border-border/40">
+          <Quote className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
+          <p className="text-lg font-bold text-foreground font-mono tabular-nums">
             {thesis.citation_count || 0}
           </p>
-          <p className="text-[10px] text-gray-500">Citations</p>
+          <p className="text-[10px] text-muted-foreground">Citations</p>
         </div>
       </div>
     </div>

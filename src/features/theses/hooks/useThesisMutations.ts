@@ -12,6 +12,7 @@ export interface ThesisPayload {
   keywords: string[];
   publication_date?: string;
   file_url?: string;
+  status?: string;
 }
 
 export const useThesisMutations = () => {

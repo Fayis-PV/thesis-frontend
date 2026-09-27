@@ -20,12 +20,12 @@ export default function RelatedTheses({
     <div className="space-y-4">
       {relatedTheses.map((thesis, i) => (
         <Link key={i} to={`/thesis/${thesis.id}`} className="block group">
-          <div className="p-4 rounded-lg border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all bg-gray-50/50">
-            <h4 className="font-bold text-gray-900 group-hover:text-blue-600 line-clamp-2 mb-2">
+          <div className="p-4 rounded-lg border border-border hover:border-primary/40 hover:shadow-xs transition-all bg-card">
+            <h4 className="font-bold text-foreground group-hover:text-primary line-clamp-2 mb-2">
               {thesis.title}
             </h4>
 
-            <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
+            <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
               <div className="flex items-center gap-1">
                 <User className="h-3 w-3" />{" "}
                 <span className="line-clamp-1 max-w-[120px]">
@@ -42,11 +42,11 @@ export default function RelatedTheses({
               </div>
             </div>
 
-            <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
               {thesis.abstract}
             </p>
 
-            <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200/50">
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
               <div className="flex flex-wrap gap-1">
                 {thesis.keywords?.slice(0, 2).map((k: string, idx: number) => (
                   <Badge

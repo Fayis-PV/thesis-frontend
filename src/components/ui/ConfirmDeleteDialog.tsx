@@ -21,13 +21,13 @@ export const ConfirmDeleteDialog = ({
 
   return (
     // z-[70] ensures this safety dialog always appears on top of everything else
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm transition-opacity">
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl bg-white text-left align-middle shadow-2xl transition-all">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity">
+      <div className="relative w-full max-w-md overflow-hidden rounded-2xl bg-card text-card-foreground border border-border text-left align-middle shadow-2xl transition-all">
         {/* Close Button */}
         <button
           onClick={onClose}
           disabled={isDeleting}
-          className="absolute right-4 top-4 rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none"
+          className="absolute right-4 top-4 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none"
         >
           <X className="h-5 w-5" />
         </button>
@@ -35,20 +35,20 @@ export const ConfirmDeleteDialog = ({
         <div className="p-6">
           <div className="flex items-start gap-4">
             {/* Warning Icon */}
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:h-12 sm:w-12">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-red-500/10 sm:h-12 sm:w-12">
               <AlertTriangle
-                className="h-6 w-6 text-red-600"
+                className="h-6 w-6 text-red-600 dark:text-red-400"
                 aria-hidden="true"
               />
             </div>
 
             {/* Text Content */}
             <div className="mt-1 flex-1">
-              <h3 className="text-lg font-bold leading-6 text-gray-900">
+              <h3 className="text-lg font-bold leading-6 text-foreground">
                 {title}
               </h3>
               <div className="mt-2">
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {description}
                 </p>
               </div>
@@ -57,12 +57,12 @@ export const ConfirmDeleteDialog = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t border-gray-100">
+        <div className="bg-muted/30 px-6 py-4 flex justify-end gap-3 border-t border-border">
           <button
             type="button"
             onClick={onClose}
             disabled={isDeleting}
-            className="inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none disabled:opacity-50"
+            className="inline-flex justify-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-xs hover:bg-muted focus:outline-none disabled:opacity-50"
           >
             Cancel
           </button>
@@ -70,7 +70,7 @@ export const ConfirmDeleteDialog = ({
             type="button"
             onClick={onConfirm}
             disabled={isDeleting}
-            className="inline-flex justify-center rounded-lg border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none disabled:bg-red-400 disabled:cursor-not-allowed"
+            className="inline-flex justify-center rounded-lg border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-red-700 focus:outline-none disabled:bg-red-400 disabled:cursor-not-allowed"
           >
             {isDeleting ? (
               <span className="flex items-center gap-2">

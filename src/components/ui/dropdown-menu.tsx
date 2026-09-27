@@ -42,7 +42,7 @@ export function DropdownMenuContent({
   const context = useContext(MenuContext);
   return context?.open ? (
     <div
-      className={`absolute right-0 z-50 mt-1 min-w-40 rounded-md border bg-white p-1 shadow-md ${className}`}
+      className={`absolute right-0 z-50 mt-1 min-w-40 rounded-md border border-border bg-popover text-popover-foreground p-1 shadow-lg ${className}`}
     >
       {children}
     </div>
@@ -57,7 +57,7 @@ export function DropdownMenuItem({
   return (
     <button
       type="button"
-      className={`flex w-full items-center rounded px-2 py-1.5 text-left text-sm hover:bg-gray-100 ${className}`}
+      className={`flex w-full items-center rounded px-2 py-1.5 text-left text-sm text-foreground hover:bg-muted transition-colors ${className}`}
       onClick={(event) => {
         onClick?.(event);
         context?.setOpen(false);
@@ -70,5 +70,5 @@ export function DropdownMenuSeparator({
   className = "",
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={`my-1 h-px bg-gray-200 ${className}`} {...props} />;
+  return <div className={`my-1 h-px bg-border ${className}`} {...props} />;
 }

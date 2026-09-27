@@ -1,5 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import {
+  ACADEMIC_INSTITUTIONS,
+  ACADEMIC_DEPARTMENTS,
+  ACADEMIC_CATEGORIES,
+} from "@/lib/academic-data";
 
 // --- Types ---
 export interface Institution {
@@ -18,6 +23,7 @@ export interface Department {
   website?: string;
   institution: Institution;
   thesis_count?: number;
+  topics?: string[];
 }
 export interface Category {
   id: string;
@@ -51,22 +57,43 @@ const extractArray = (response: unknown): unknown[] => {
 export const useInstitutions = () =>
   useQuery({
     queryKey: ["institutions"],
-    queryFn: async (): Promise<Institution[]> =>
-      extractArray(await api.get("/thesis/institutions/")) as Institution[],
+    queryFn: async (): Promise<Institution[]> => {
+      try {
+        const res = extractArray(await api.get("/thesis/institutions/")) as Institution[];
+        if (res.length > 0) return res;
+      } catch {
+        // Fallback
+      }
+      return ACADEMIC_INSTITUTIONS as unknown as Institution[];
+    },
   });
 
 export const useDepartments = () =>
   useQuery({
     queryKey: ["departments"],
-    queryFn: async (): Promise<Department[]> =>
-      extractArray(await api.get("/thesis/departments/")) as Department[],
+    queryFn: async (): Promise<Department[]> => {
+      try {
+        const res = extractArray(await api.get("/thesis/departments/")) as Department[];
+        if (res.length > 0) return res;
+      } catch {
+        // Fallback
+      }
+      return ACADEMIC_DEPARTMENTS as unknown as Department[];
+    },
   });
 
 export const useCategories = () =>
   useQuery({
     queryKey: ["categories"],
-    queryFn: async (): Promise<Category[]> =>
-      extractArray(await api.get("/thesis/categories/")) as Category[],
+    queryFn: async (): Promise<Category[]> => {
+      try {
+        const res = extractArray(await api.get("/thesis/categories/")) as Category[];
+        if (res.length > 0) return res;
+      } catch {
+        // Fallback
+      }
+      return ACADEMIC_CATEGORIES as unknown as Category[];
+    },
   });
 
 // --- Mutations ---

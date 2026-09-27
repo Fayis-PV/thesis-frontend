@@ -69,32 +69,32 @@ export default function ExcelUploadPage() {
   return (
     <div className="space-y-6 max-w-3xl mx-auto px-4 py-8">
       <div>
-        <h2 className="text-3xl font-bold text-gray-900">Bulk Import</h2>
-        <p className="text-gray-500 mt-1">
+        <h2 className="text-3xl font-bold text-foreground">Bulk Import</h2>
+        <p className="text-muted-foreground mt-1">
           Upload thesis records directly via an Excel spreadsheet.
         </p>
       </div>
 
-      <Card className="bg-blue-50 border-blue-100 shadow-none">
+      <Card className="bg-primary/10 border-primary/20 shadow-none">
         <CardContent className="pt-6 flex gap-4">
-          <Info className="text-blue-600 flex-shrink-0" />
-          <div className="text-sm text-blue-900 space-y-2">
+          <Info className="text-primary flex-shrink-0" />
+          <div className="text-sm text-foreground space-y-2">
             <p className="font-semibold">Required Columns:</p>
-            <p className="font-mono bg-white/50 py-1 px-2 rounded">
+            <p className="font-mono bg-background/80 py-1 px-2 rounded border border-border">
               Title, Abstract, Author
             </p>
             <p className="font-semibold mt-2">Optional Columns:</p>
-            <p className="font-mono bg-white/50 py-1 px-2 rounded">
+            <p className="font-mono bg-background/80 py-1 px-2 rounded border border-border">
               Supervisor, Institution Code, Department Code, Keywords
             </p>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="border-gray-200 shadow-sm">
+      <Card className="border-border shadow-xs bg-card">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileSpreadsheet className="text-blue-600" /> Select File
+          <CardTitle className="flex items-center gap-2 text-foreground">
+            <FileSpreadsheet className="text-primary" /> Select File
           </CardTitle>
           <CardDescription>Drag and drop your .xlsx file here.</CardDescription>
         </CardHeader>
@@ -110,27 +110,27 @@ export default function ExcelUploadPage() {
               onClick={() => document.getElementById("excelFile")?.click()}
               className={`border-2 border-dashed rounded-xl p-12 text-center transition-all cursor-pointer ${
                 dragOver
-                  ? "border-blue-500 bg-blue-50"
+                  ? "border-primary bg-primary/10"
                   : file
-                    ? "border-emerald-500 bg-emerald-50"
-                    : "border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                    ? "border-emerald-500/50 bg-emerald-500/10"
+                    : "border-border hover:bg-muted/40 hover:border-primary/40"
               }`}
             >
               {file ? (
                 <div className="flex flex-col items-center">
                   <FileSpreadsheet
                     size={48}
-                    className="text-emerald-600 mb-2"
+                    className="text-emerald-500 mb-2"
                   />
-                  <p className="font-semibold text-gray-900">{file.name}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="font-semibold text-foreground">{file.name}</p>
+                  <p className="text-xs text-muted-foreground">
                     {(file.size / 1024).toFixed(1)} KB
                   </p>
                 </div>
               ) : (
                 <div className="flex flex-col items-center">
-                  <UploadCloud size={48} className="text-gray-400 mb-4" />
-                  <p className="font-medium text-gray-900">
+                  <UploadCloud size={48} className="text-muted-foreground mb-4" />
+                  <p className="font-medium text-foreground">
                     Click to browse or drag file here
                   </p>
                 </div>
@@ -152,13 +152,13 @@ export default function ExcelUploadPage() {
             />
 
             {successCount !== null && (
-              <div className="flex items-start gap-2 rounded-md border bg-emerald-50 p-4 text-emerald-800">
+              <div className="flex items-start gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-600 dark:text-emerald-400">
                 <CheckCircle2 className="h-4 w-4" />
                 <div>
                   Successfully imported <strong>{successCount}</strong> theses.{" "}
                   <Link
                     to="/admin/theses"
-                    className="underline font-medium ml-2"
+                    className="underline font-medium ml-2 text-primary"
                   >
                     View all theses →
                   </Link>
@@ -167,11 +167,11 @@ export default function ExcelUploadPage() {
             )}
 
             {errorList.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <h4 className="font-semibold text-red-800 flex items-center mb-2">
+              <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4">
+                <h4 className="font-semibold text-destructive flex items-center mb-2">
                   <AlertCircle className="h-4 w-4 mr-2" /> Upload Failed
                 </h4>
-                <ul className="list-disc list-inside text-sm text-red-700 space-y-1">
+                <ul className="list-disc list-inside text-sm text-destructive space-y-1">
                   {errorList.map((err, i) => (
                     <li key={i}>{err}</li>
                   ))}
@@ -181,7 +181,7 @@ export default function ExcelUploadPage() {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-base"
+              className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground text-base"
               disabled={uploadExcelMutation.isPending || !file}
             >
               {uploadExcelMutation.isPending ? (

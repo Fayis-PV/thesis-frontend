@@ -51,13 +51,13 @@ export const SearchBar: React.FC<Props> = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={displayedPlaceholder}
-        className="h-12 pl-12 pr-12 border-2 border-blue-100 focus-visible:border-blue-500 focus-visible:ring-blue-500/20 rounded-xl text-sm text-gray-900 transition-all duration-300 bg-white shadow-sm hover:shadow-md w-full"
+        className="h-12 pl-12 pr-12 border border-border focus-visible:border-primary focus-visible:ring-primary/20 rounded-xl text-sm text-foreground transition-all duration-300 bg-card shadow-xs hover:border-primary/40 w-full placeholder:text-muted-foreground"
       />
       <div className="absolute left-4 top-1/2 -translate-y-1/2 transition-all duration-300">
         {isSearching ? (
-          <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+          <Loader2 className="h-5 w-5 animate-spin text-primary" />
         ) : (
-          <Search className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform" />
+          <Search className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
         )}
       </div>
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -66,13 +66,13 @@ export const SearchBar: React.FC<Props> = ({
             variant="ghost"
             size="sm"
             onClick={() => onChange("")}
-            className="h-8 w-8 p-0 hover:bg-blue-50 rounded-full transition-all"
+            className="h-8 w-8 p-0 hover:bg-muted rounded-full transition-all"
           >
-            <X className="h-4 w-4 text-gray-500" />
+            <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
           </Button>
         )}
         {isFocused && !searchTerm && (
-          <Sparkles className="h-4 w-4 text-blue-400 animate-pulse" />
+          <Sparkles className="h-4 w-4 text-accent animate-pulse" />
         )}
       </div>
     </div>

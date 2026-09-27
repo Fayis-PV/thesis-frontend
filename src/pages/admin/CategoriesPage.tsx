@@ -111,27 +111,27 @@ export default function CategoriesPage() {
       <div className="space-y-6 max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Categories</h2>
-            <p className="text-gray-500 mt-1">
+            <h2 className="text-3xl font-bold text-foreground">Categories</h2>
+            <p className="text-muted-foreground mt-1">
               Organize research by subject area.
             </p>
           </div>
           <Button
             onClick={() => handleOpen()}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             <Plus className="mr-2 h-4 w-4" /> Add Category
           </Button>
         </div>
 
-        <Card className="shadow-sm border-gray-200">
-          <CardHeader className="bg-gray-50/50 border-b border-gray-100">
-            <CardTitle>Category Tree</CardTitle>
+        <Card className="shadow-xs border-border bg-card">
+          <CardHeader className="bg-muted/40 border-b border-border">
+            <CardTitle className="text-foreground">Category Tree</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {isLoading ? (
               <div className="p-10 flex justify-center">
-                <Loader2 className="animate-spin text-blue-600" />
+                <Loader2 className="animate-spin text-primary" />
               </div>
             ) : (
               <Table>
@@ -145,9 +145,9 @@ export default function CategoriesPage() {
                 </TableHeader>
                 <TableBody>
                   {flatCategories.map((cat) => (
-                    <TableRow key={cat.id}>
+                    <TableRow key={cat.id} className="border-border">
                       <TableCell
-                        className={`font-medium ${cat.parent ? "text-gray-600" : "text-gray-900"}`}
+                        className={`font-medium ${cat.parent ? "text-muted-foreground" : "text-foreground font-semibold"}`}
                       >
                         {cat.name}
                       </TableCell>
@@ -155,20 +155,20 @@ export default function CategoriesPage() {
                         {cat.parent ? (
                           <Badge
                             variant="secondary"
-                            className="bg-purple-50 text-purple-700"
+                            className="bg-primary/10 text-primary border-primary/20"
                           >
                             Subcategory
                           </Badge>
                         ) : (
                           <Badge
-                            className="bg-blue-50 text-blue-700 border-blue-200"
+                            className="bg-muted text-foreground border-border"
                             variant="outline"
                           >
                             Root Category
                           </Badge>
                         )}
                       </TableCell>
-                      <TableCell className="text-center text-emerald-600 font-medium">
+                      <TableCell className="text-center text-emerald-600 dark:text-emerald-400 font-medium">
                         {cat.thesis_count}
                       </TableCell>
                       <TableCell className="text-right">
@@ -186,7 +186,7 @@ export default function CategoriesPage() {
                               onClick={() => {
                                 if (confirm("Delete?")) remove.mutate(cat.id);
                               }}
-                              className="text-red-600"
+                              className="text-destructive focus:text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" /> Delete
                             </DropdownMenuItem>
@@ -210,7 +210,7 @@ export default function CategoriesPage() {
             className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none"
             aria-label="Close category dialog"
           >
-            <X className="h-5 w-5 text-gray-500 hover:text-gray-900" />
+            <X className="h-5 w-5 text-muted-foreground hover:text-foreground" />
           </button>
           <DialogHeader>
             <DialogTitle>
@@ -251,7 +251,7 @@ export default function CategoriesPage() {
               <Button
                 type="submit"
                 disabled={create.isPending || update.isPending}
-                className="bg-blue-600 hover:bg-blue-700 w-full"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
               >
                 {editingId ? "Update" : "Save"}
               </Button>

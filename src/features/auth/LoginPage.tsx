@@ -11,6 +11,7 @@ import { useAuth } from "./AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import type { APIResponse, User } from "@/types/api";
 
 // 1. Define the Zod Schema for strict validation
@@ -135,7 +136,10 @@ export const LoginPage = () => {
       </div>
 
       {/* Right — form */}
-      <div className="flex items-center justify-center px-4 py-12 sm:px-6">
+      <div className="relative flex items-center justify-center px-4 py-12 sm:px-6">
+        <div className="absolute top-6 right-6">
+          <ThemeToggle />
+        </div>
         <div className="w-full max-w-sm">
           <Button asChild variant="ghost" size="sm" className="mb-6 -ml-2">
             <Link to="/">

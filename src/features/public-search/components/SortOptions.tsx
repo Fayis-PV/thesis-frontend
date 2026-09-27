@@ -24,7 +24,7 @@ export const SortOptions: React.FC<Props> = ({
 
   return (
     <div className="flex gap-2 items-center w-full md:w-auto">
-      <ArrowUpDown className="h-5 w-5 text-gray-400 hidden lg:block" />
+      <ArrowUpDown className="h-5 w-5 text-muted-foreground hidden lg:block" />
       <div className="flex-1 lg:w-48">
         <select
           value={sortField || "none"}
@@ -34,7 +34,7 @@ export const SortOptions: React.FC<Props> = ({
               sortOrder,
             )
           }
-          className="h-9 w-full rounded-md border border-gray-300 bg-white px-3 text-sm"
+          className="h-9 w-full rounded-md border border-border bg-card text-foreground px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
         >
           <option value="none">Default Order</option>
           {options.map((opt) => (
@@ -51,7 +51,7 @@ export const SortOptions: React.FC<Props> = ({
           onClick={() =>
             onSortChange(sortField, sortOrder === "asc" ? "desc" : "asc")
           }
-          className="w-10 px-0 bg-white"
+          className="w-10 px-0 bg-card text-foreground border-border hover:bg-muted"
         >
           {sortOrder === "asc" ? (
             <ArrowUp className="h-4 w-4" />

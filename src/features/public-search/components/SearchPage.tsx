@@ -155,31 +155,6 @@ export const SearchPage = () => {
     !Array.isArray(rawData) && (rawData?.data?.previous || rawData?.previous);
   // =========================================================================
 
-  // Sync state to URL
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (debouncedSearchTerm) params.set("search", debouncedSearchTerm);
-    if (currentPage > 1) params.set("page", currentPage.toString());
-    if (sortField)
-      params.set(
-        "ordering",
-        sortOrder === "desc" ? `-${sortField}` : sortField,
-      );
-
-    Object.entries(filters).forEach(([key, val]) => {
-      if (val) params.set(key, String(val));
-    });
-
-    setSearchParams(params, { replace: true });
-  }, [
-    debouncedSearchTerm,
-    currentPage,
-    filters,
-    sortField,
-    sortOrder,
-    setSearchParams,
-  ]);
-
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", newPage.toString());
@@ -209,23 +184,23 @@ export const SearchPage = () => {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-serif font-bold text-gray-900 flex items-center gap-3">
-            <BookOpen className="h-8 w-8 text-blue-600" />
+          <h1 className="text-3xl font-serif font-bold text-foreground flex items-center gap-3">
+            <BookOpen className="h-8 w-8 text-primary" />
             Thesis Repository
           </h1>
-          <p className="text-gray-500 mt-2">
+          <p className="text-muted-foreground mt-2 text-sm sm:text-base">
             Search, filter, and explore published academic research.
           </p>
         </div>
 
         {/* Search Header Area */}
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 mb-8 space-y-4">
+        <div className="bg-card p-5 rounded-2xl shadow-xs border border-border mb-8 space-y-4">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <SearchBar
@@ -236,7 +211,7 @@ export const SearchPage = () => {
             </div>
             <Button
               variant={showFilters ? "default" : "outline"}
-              className={`h-12 px-6 ${showFilters ? "bg-blue-600 shadow-md" : "border-gray-300 text-gray-700"}`}
+              className={`h-12 px-6 ${showFilters ? "bg-primary text-primary-foreground shadow-xs" : "border-border text-foreground hover:bg-muted"}`}
               onClick={() => setShowFilters(!showFilters)}
             >
               <SlidersHorizontal className="h-4 w-4 mr-2" /> Filters
@@ -245,15 +220,15 @@ export const SearchPage = () => {
 
           {/* Active Filter Indicators */}
           {hasActiveFilters && (
-            <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-gray-500 font-medium">Applied Filters:</span>
+            <div className="pt-3 border-t border-border flex flex-wrap items-center gap-2 text-xs">
+              <span className="text-muted-foreground font-medium">Applied Filters:</span>
               {currentDeptName && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 text-blue-800 rounded-md font-medium border border-blue-100">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-foreground rounded-md font-medium border border-primary/20">
                   <span>Department: <strong>{currentDeptName}</strong></span>
                   <button
                     type="button"
                     onClick={() => handleRemoveSingleFilter("department")}
-                    className="hover:text-blue-950 p-0.5 rounded"
+                    className="hover:opacity-75 p-0.5 rounded"
                     aria-label="Remove department filter"
                   >
                     <X className="h-3 w-3" />
@@ -261,12 +236,12 @@ export const SearchPage = () => {
                 </span>
               )}
               {currentCatName && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-900 rounded-md font-medium border border-amber-200">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500/10 text-amber-700 dark:text-amber-300 rounded-md font-medium border border-amber-500/20">
                   <span>Category: <strong>{currentCatName}</strong></span>
                   <button
                     type="button"
                     onClick={() => handleRemoveSingleFilter("category")}
-                    className="hover:text-amber-950 p-0.5 rounded"
+                    className="hover:opacity-75 p-0.5 rounded"
                     aria-label="Remove category filter"
                   >
                     <X className="h-3 w-3" />
@@ -274,13 +249,13 @@ export const SearchPage = () => {
                 </span>
               )}
               {sortField === "view_count" && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-md font-medium border border-emerald-200">
-                  <TrendingUp className="h-3 w-3 text-emerald-600" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 rounded-md font-medium border border-emerald-500/20">
+                  <TrendingUp className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                   <span>Sorted by: <strong>Best Works (Most Viewed)</strong></span>
                   <button
                     type="button"
                     onClick={handleRemoveSort}
-                    className="hover:text-emerald-950 p-0.5 rounded"
+                    className="hover:opacity-75 p-0.5 rounded"
                     aria-label="Reset sorting"
                   >
                     <X className="h-3 w-3" />
@@ -290,7 +265,7 @@ export const SearchPage = () => {
               <button
                 type="button"
                 onClick={handleClearFilters}
-                className="text-gray-500 hover:text-red-600 text-xs ml-auto underline"
+                className="text-muted-foreground hover:text-red-500 text-xs ml-auto underline"
               >
                 Clear all filters
               </button>
@@ -298,7 +273,7 @@ export const SearchPage = () => {
           )}
 
           {showFilters && (
-            <div className="pt-4 border-t border-gray-100 flex flex-col lg:flex-row gap-4 justify-between items-start animate-in fade-in slide-in-from-top-2">
+            <div className="pt-4 border-t border-border flex flex-col lg:flex-row gap-4 justify-between items-start animate-in fade-in slide-in-from-top-2">
               <FilterSection
                 filters={filters}
                 onFiltersChange={handleFiltersChange}
@@ -314,19 +289,19 @@ export const SearchPage = () => {
         </div>
 
         {/* Results Info & View Toggle */}
-        <div className="flex justify-between items-center mb-6 bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
-          <h2 className="text-base font-bold text-gray-900 ml-2">
-            <span className="bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-md mr-2">
+        <div className="flex justify-between items-center mb-6 bg-card p-3 rounded-lg border border-border shadow-xs">
+          <h2 className="text-base font-bold text-foreground ml-2">
+            <span className="bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-foreground px-2.5 py-0.5 rounded-md mr-2 font-mono">
               {totalCount}
             </span>
             {totalCount === 1 ? "Result" : "Results"}
           </h2>
-          <div className="flex gap-1 bg-gray-50 p-1 rounded-md border border-gray-200">
+          <div className="flex gap-1 bg-muted/40 p-1 rounded-md border border-border">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setViewMode("list")}
-              className={`h-8 w-8 p-0 ${viewMode === "list" ? "bg-white shadow-sm text-blue-600" : "text-gray-500"}`}
+              className={`h-8 w-8 p-0 ${viewMode === "list" ? "bg-card shadow-xs text-primary font-semibold border border-border/60" : "text-muted-foreground"}`}
             >
               <List className="h-4 w-4" />
             </Button>
@@ -334,7 +309,7 @@ export const SearchPage = () => {
               variant="ghost"
               size="sm"
               onClick={() => setViewMode("grid")}
-              className={`h-8 w-8 p-0 ${viewMode === "grid" ? "bg-white shadow-sm text-blue-600" : "text-gray-500"}`}
+              className={`h-8 w-8 p-0 ${viewMode === "grid" ? "bg-card shadow-xs text-primary font-semibold border border-border/60" : "text-muted-foreground"}`}
             >
               <LayoutGrid className="h-4 w-4" />
             </Button>
@@ -355,7 +330,7 @@ export const SearchPage = () => {
               disabled={!hasPrevious}
               onClick={() => handlePageChange(currentPage - 1)}
               variant="outline"
-              className="bg-white"
+              className="bg-card text-foreground border-border hover:bg-muted"
             >
               Previous Page
             </Button>
@@ -363,7 +338,7 @@ export const SearchPage = () => {
               disabled={!hasNext}
               onClick={() => handlePageChange(currentPage + 1)}
               variant="outline"
-              className="bg-white"
+              className="bg-card text-foreground border-border hover:bg-muted"
             >
               Next Page
             </Button>

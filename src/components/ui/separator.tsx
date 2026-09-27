@@ -12,7 +12,7 @@ export function Separator({
   return (
     <div
       role="separator"
-      className={`${orientation === "horizontal" ? "h-px w-full" : "h-full w-px"} shrink-0 bg-gray-200 ${className}`}
+      className={`${orientation === "horizontal" ? "h-px w-full" : "h-full w-px"} shrink-0 bg-border ${className}`}
       {...props}
     />
   );
