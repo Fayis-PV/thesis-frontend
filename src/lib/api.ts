@@ -7,7 +7,7 @@ import {
 } from "./auth-utils";
 
 const API_URL =
-  import.meta.env.VITE_API_URL ||
+  import.meta.env.API_URL ||
   "https://thesis-management-backend.onrender.com/api";
 
 export const api = axios.create({

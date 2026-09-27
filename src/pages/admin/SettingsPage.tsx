@@ -37,7 +37,7 @@ export default function SettingsPage() {
   const isDemo =
     import.meta.env.VITE_USE_MOCK_DATA === "true" ||
     import.meta.env.DEV ||
-    !import.meta.env.VITE_API_URL;
+    !import.meta.env.API_URL;
 
   return (
     <div className="space-y-6">
@@ -236,7 +236,7 @@ export default function SettingsPage() {
                 <div className="rounded-lg border border-border/80 p-3.5 space-y-1 bg-card">
                   <span className="text-muted-foreground font-medium">API Target URL</span>
                   <p className="font-semibold text-foreground font-mono truncate">
-                    {import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api"}
+                    {import.meta.env.API_URL}
                   </p>
                 </div>
 

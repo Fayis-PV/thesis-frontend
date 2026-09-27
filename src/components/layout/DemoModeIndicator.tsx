@@ -17,7 +17,7 @@ export function DemoModeIndicator({
   const isDemo =
     import.meta.env.VITE_USE_MOCK_DATA === "true" ||
     import.meta.env.DEV ||
-    !import.meta.env.VITE_API_URL;
+    !import.meta.env.API_URL;
 
   if (variant === "banner" && isDemo) {
     return (
