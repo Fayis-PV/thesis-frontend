@@ -6,7 +6,9 @@ import {
   clearTokens,
 } from "./auth-utils";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://thesis-management-backend.onrender.com/api";
 
 export const api = axios.create({
   baseURL: API_URL,
